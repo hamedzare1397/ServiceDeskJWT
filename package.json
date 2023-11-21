@@ -1,0 +1,40 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build && vite build --ssr"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^4.0.0",
+        "axios": "^1.1.2",
+        "i18next": "^22.4.10",
+        "laravel-vite-plugin": "^0.7.2",
+        "sass": "^1.60.0",
+        "vite": "^4.1.3",
+        "vite-plugin-vuetify": "^1.0.2",
+        "vue": "^3.3.4",
+        "vue-loader": "^17.0.1",
+        "vue-router": "^4.1.6",
+        "vuetify": "^3.1.1",
+        "vuex": "^4.1.0"
+    },
+    "dependencies": {
+        "@mdi/font": "^7.1.96",
+        "@mdi/js": "^7.1.96",
+        "@vitejs/plugin-vue": "^4.3.4",
+        "animate.css": "^4.1.1",
+        "animation.css": "^0.1.0",
+        "font-awesome": "^4.7.0",
+        "jalali-moment": "^3.3.10",
+        "node-sass": "^9.0.0",
+        "pinia": "^2.1.3",
+        "sass-loader": "^13.3.2",
+        "tiny-emitter": "^2.1.0",
+        "v-network-graph": "^0.9.13",
+        "vue-codemirror": "^4.0.6",
+        "vue-router": "^3.0.6",
+        "vuex": "^3.1.1",
+        "webfontloader": "^1.6.28"
+    },
+    "type": "module"
+}
