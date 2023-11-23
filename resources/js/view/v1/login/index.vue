@@ -26,11 +26,11 @@ defineComponent(['Login'])
 
 <style scoped>
 .bgimage{
-    background-image: url("/storage/images/bg-left.jpg");
+    background-image: url("/storage/images/img5.jpg");
     background-position: center;
     background-size: cover;
 }
 body{
-    font-family: "Times New Roman"
+    font-family: "B Naznin"
 }
 </style>

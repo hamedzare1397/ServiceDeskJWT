@@ -1,7 +1,6 @@
 import {createRouter, createWebHashHistory} from 'vue-router';
-// import ManagerModules from './managerRoutes'
-// import CustomerModules from './customerRoutes'
-import UserRoutes from './users/login.js'
+
+import AppRoutes from './App/application.js'
 import {useAuthStore, useUserStore} from "@/store/user.js";
 import {computed} from "vue";
 
@@ -18,8 +17,9 @@ const router=createRouter({
         },
         {
             path: '/app',
-            component: () => import('@/view/v1/Customer/App.vue'),
-            children: UserRoutes,
+            name:'app',
+            component: () => import('@/view/v1/App.vue'),
+            children: AppRoutes,
         }
 
     ]

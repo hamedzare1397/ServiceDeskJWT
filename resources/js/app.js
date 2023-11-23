@@ -13,7 +13,7 @@ app
     .provide('config',{
         'appName':'سامانه ارزیابی خبر',
         'organ':'اداره زیر ساخت مخابرات استان فارس',
-        'logo':'/storage/images/logo.png',
+        'logo':'/storage/images/favicon.ico',
         'addressApi':'http://127.0.0.1:8000/api'
     })
     .mount("#app")

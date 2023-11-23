@@ -21,7 +21,6 @@
 import {inject, ref} from "vue";
 const appName = inject('config').appName;
 import FormLogin from './FormLogin.vue';
-import FormLoginMobile from './FormLoginMobile.vue'
 
 const loginWithMobile = ref(false);
 const logoAddress=inject('config').logo;

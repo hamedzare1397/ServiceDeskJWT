@@ -1,8 +1,10 @@
 import {defineStore} from 'pinia'
 import {inject, ref} from "vue";
-import router from '@/router';
+import {useRouter} from "vue-router";
 
 export const useUserStore = defineStore('user', () => {
+    const router = useRouter();
+    const authStore = useAuthStore();
 
     const information = ref({
         avatar:'',
@@ -19,7 +21,7 @@ export const useUserStore = defineStore('user', () => {
             }
         }catch (ex)
         {
-            return ex.errors;
+            authStore.setToken();
         }
     }
     async function getData()
@@ -29,7 +31,7 @@ export const useUserStore = defineStore('user', () => {
             information.value = response.data;
         }catch (err)
         {
-            alert('خطا در دریافت اطلاعات کاربر');
+            authStore.setToken();
         }
     }
 
@@ -40,6 +42,7 @@ export const useUserStore = defineStore('user', () => {
         information,navigations,
     };
 });
+
 export const useAuthStore = defineStore('user-auth', () => {
     const token = ref(null);
     const userStore = useUserStore();
@@ -52,13 +55,13 @@ export const useAuthStore = defineStore('user-auth', () => {
     }
 
     async function login(person){
-        let response=await axios.post('/api/login', person);
+        let response = await axios.post('/api/login', person);
         if (response.status == 200) {
             userStore.setInformation(response.data.user);
             setToken(response.data.authorisation.token);
-            localStorage.setItem('token',response.data.authorisation.token);
+            localStorage.setItem('token', response.data.authorisation.token);
             // debugger;
-            router.push({name:'dashboard'});
+            router.push({name: 'dashboard'});
         }
         return true;
     }

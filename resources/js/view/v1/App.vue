@@ -33,7 +33,7 @@
 import {computed, inject, ref} from "vue";
 import RightNav from './navs/RightNavs.vue';
 
-import {useAppStore} from './../../../store';
+import {useAppStore} from '@/store/index.js';
 
 const appName = inject('config').appName;
 import {storeToRefs} from 'pinia';

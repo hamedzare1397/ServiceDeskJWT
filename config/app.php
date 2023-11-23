@@ -159,7 +159,8 @@ return [
         /*
          * Package Service Providers...
          */
-
+        PHPOpenSourceSaver\JWTAuth\Providers\LaravelServiceProvider::class,
+        Mews\Captcha\CaptchaServiceProvider::class,
         /*
          * Application Service Providers...
          */

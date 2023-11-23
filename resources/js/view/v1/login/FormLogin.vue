@@ -11,6 +11,7 @@
                 <v-text-field v-model="person.username" label="نام کاربری"
                       prepend-icon="mdi-account"
                       :error="errorMessage"
+                      :error-messages="errorMessage"
                 ></v-text-field>
                 <v-text-field v-model="person.password" label="رمز عبور"
                               prepend-icon="mdi-lock"
@@ -33,15 +34,16 @@
 </template>
 
 <script setup>
-import {inject, reactive, ref} from "vue";
+import {computed, inject, reactive, ref} from "vue";
 import {useAuthStore} from "@/store/user.js";
 import {useRouter} from 'vue-router';
 const appName=inject('config').organ
 
 const person=reactive({
-    username:ref('zarssasdsadehmd'),
-    password:ref('123123'),
+    username:ref('admin'),
+    password:ref('000'),
 })
+
 const isLoading = ref(false);
 const errorMessage = ref(null);
 const authStore = useAuthStore();
@@ -57,9 +59,8 @@ async function login(){
             }
         })
         .catch(err=>{
-            alert('error');
-            console.error(err)
-            errorMessage.value = err.response.data;
+            console.log(err);
+            errorMessage.value = err.response.data.username;
         })
         .finally(() => {
             isLoading.value = false;
