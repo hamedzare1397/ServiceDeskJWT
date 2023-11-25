@@ -28,24 +28,29 @@
             </thead>
             <tbody>
             <tr>
-                <td v-if="items.length<=0" :colspan="headers.length+headersAppend.length">
+                <td v-if="items.length<=0"
+                    :colspan="headers.length+headersPrepend.length+headersAppend.length">
                     <div class="text-center">
                         <h1>داده جهت نمایش وجود ندارد</h1>
                         <v-icon size="256">mdi-not-equal</v-icon>
                     </div>
-
                 </td>
             </tr>
-            <tr v-for="(item,index) in items" v-key="item.key">
-
-                <td v-for="col in headersPrepend" v-key="col.key" :index="index">
-                    <slot :name="col.key" :item="item" :col="col" :index="index"></slot>
-                </td>
-                <td v-for="col in headers" v-key="col.key" :index="index">{{ item[col.key]}}</td>
-                <td v-for="col in headersAppend" v-key="col.key" :index="index">
-                    <slot :name="col.key" :item="item" :col="col"></slot>
-                </td>
-            </tr>
+            <template v-for="(item,index) in items" v-key="item.key">
+                <tr >
+                    <td v-for="col in headersPrepend" v-key="col.key" :index="index">
+                        <slot :name="col.key" :item="item" :col="col" :index="index"></slot>
+                    </td>
+                    <td v-for="col in headers" v-key="col.key" :index="index">{{ item[col.key]}}</td>
+                    <td v-for="col in headersAppend" v-key="col.key" :index="index">
+                        <slot :name="col.key" :item="item" :col="col"></slot>
+                    </td>
+                </tr>
+                <slot name="underRow"
+                      :item="item"
+                      :colspan="headers.length+headersPrepend.length+headersAppend.length"
+                ></slot>
+            </template>
             </tbody>
             <tfoot>
             <slot name="footer"></slot>

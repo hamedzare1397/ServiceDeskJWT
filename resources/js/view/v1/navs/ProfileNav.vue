@@ -5,8 +5,8 @@
 >
     <v-list>
         <v-list-item
-            :prepend-avatar="information.avatar?information.avatar:false"
-            :prepend-icon="information.avatar?false:'mdi-account'"
+            :prepend-avatar="information?.avatar?information?.avatar:false"
+            :prepend-icon="information?.avatar?false:'mdi-account'"
             nav
         >
             <template v-slot:append>

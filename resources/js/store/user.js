@@ -59,17 +59,19 @@ export const useAuthStore = defineStore('user-auth', () => {
         return token.value;
     }
     async function login(person){
-        let response = await api.post('/login', person);
-        if (response.status == 200) {
-            userStore.setInformation(response.data.user);
-            setToken(response.data.authorisation.token);
-            localStorage.setItem('token', response.data.authorisation.token);
-            router.push({name: 'App'});
-        }
-        return true;
+        api.post('login', person)
+            .then(response => {
+                if (response?.status == 200) {
+                    userStore.setInformation(response.data.user);
+                    setToken(response.data.authorisation.token);
+                    localStorage.setItem('token', response.data.authorisation.token);
+                    router.push({name: 'App.Dashboard'});
+                    return true;
+                }
+            });
     }
     async function logout(){
-        let response=await api.post('/logout');
+        let response=await api.post('logout');
         if (response.status == 200 || response.status==401) {
             userStore.setInformation(null);
             setToken(null);

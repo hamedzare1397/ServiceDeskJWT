@@ -9,7 +9,10 @@ axios.interceptors.response.use((response)=>{
     return response;
 },async (error) => {
     const appStore = useAppStore();
-    switch (error.response.status)
+    // console.clear();
+    console.log(error);
+    // debugger;
+    switch (error?.response?.status)
     {
         case 401:
             if (error.response.data.username!=undefined)

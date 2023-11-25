@@ -7,7 +7,7 @@
         <v-row>
             <v-col cols="12">
                 <slot name="logo"></slot>
-                <v-card-title>{{ appName }}</v-card-title>
+                <v-card-title class="text-center">{{ appName }}</v-card-title>
                 <v-text-field v-model="person.username" label="نام کاربری"
                       prepend-icon="mdi-account"
                       :error="errorMessage"
@@ -20,7 +20,7 @@
         </v-row>
         <v-row>
             <v-col cols="12">
-                <v-btn :loading="isLoading" :disabled="isLoading" @click="login">ورود</v-btn>
+                <v-btn prepend-icon="mdi-account-in" :loading="isLoading" :disabled="isLoading" @click="login">ورود</v-btn>
             </v-col>
         </v-row>
         <v-row>
@@ -60,7 +60,7 @@ async function login(){
         })
         .catch(err=>{
             console.log(err);
-            errorMessage.value = err.response.data.username;
+            errorMessage.value = err.response?.data?.username;
         })
         .finally(() => {
             isLoading.value = false;

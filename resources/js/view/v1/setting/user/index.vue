@@ -19,12 +19,27 @@
                     :perPage="perPage"
                     @update:page="getUsers"
         >
-            <template #row="{index}">{{ (index+1)+((page-1)*perPage) }}</template>
-            <template v-slot:actions>
+            <template #row="{index}">
+                <td>{{ (index+1)+((page-1)*perPage) }}</td>
+            </template>
+            <template #actions="{item}">
                 <v-btn-group density="compact">
                     <v-btn icon="mdi-pencil"></v-btn>
-                    <v-btn icon="mdi-badge-account-outline"></v-btn>
+                    <v-btn @click="item.show=!item.show" icon="mdi-badge-account-outline"></v-btn>
                 </v-btn-group>
+            </template>
+            <template #underRow="{item,colspan}">
+                <transition
+                    mode="in-out"
+                    enter-active-class="animate__animated animate__bounceInRight"
+                    leave-active-class="animate__animated animate__bounceOutRight"
+                >
+                <tr v-if="item.show">
+                    <td :colspan="colspan">
+                        <user-info :item="item"></user-info>
+                    </td>
+                </tr>
+                </transition>
             </template>
         </datatables>
     </v-sheet>
@@ -32,9 +47,10 @@
 </template>
 
 <script setup>
-import {reactive, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import Datatables from "./../../Components/datatables.vue";
 import {useApi} from "@/compositions/CallApi.vue";
+import userInfo from "../../Components/userInformation.vue";
 
 const api = useApi();
 const isLoading = ref(false);
@@ -49,7 +65,7 @@ const action_header = reactive([
 const users = ref([]);
 const page = ref(1);
 const perPage = ref(10);
-function getUsers(event){
+function getUsers(event=1){
     page.value = event;
     isLoading.value = true;
     api.post(`user?user-page=${page.value}`)
@@ -61,6 +77,10 @@ function getUsers(event){
     })
     ;
 }
+
+onMounted(()=>{
+    getUsers();
+})
 </script>
 
 <style scoped>
