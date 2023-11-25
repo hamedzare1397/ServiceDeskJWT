@@ -22,7 +22,6 @@ class AuthController extends Controller
     public function login()
     {
         $credentials = request([$this->username(), 'password']);
-
         if (! $token = auth('api')->attempt($credentials)) {
             return response()->json([
                 'username'=>'خطا در ورود به سیستم',
@@ -96,5 +95,10 @@ class AuthController extends Controller
                 'type' => 'bearer',
             ]
         ]);
+    }
+
+    public function information(Request $request)
+    {
+        return $request->user();
     }
 }

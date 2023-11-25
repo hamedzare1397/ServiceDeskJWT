@@ -1,18 +1,25 @@
 export default [
     {
         path:'',
-        name:'app.index',
+        name:'App.Index',
         children:[
             {
                 path:'setting',
-                name:'app.setting',
-                component: () => import('@/js/view/v1/setting/index.vye'),
+                name:'App.Setting',
+                component: () => import('@/view/v1/setting/index.vue'),
+                children:[
+                    {
+                        path:'users',
+                        name:'App.Setting.User',
+                        component: () => import('@/view/v1/setting/user/index.vue')
+                    }
+                ]
             },
         ]
     },
     {
         path:'dashboard',
-        name:'dashboard',
+        name:'App.Dashboard',
         component:()=>import('../../view/v1/Dashboard/index.vue'),
         meta:{}
     },

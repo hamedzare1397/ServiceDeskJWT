@@ -10,7 +10,7 @@
             nav
         >
             <template v-slot:append>
-                <v-list-item-title>{{`${information.firstname} ${information.lastname}`}}</v-list-item-title>
+                <v-list-item-title>{{`${fullname}`}}</v-list-item-title>
             </template>
         </v-list-item>
     </v-list>
@@ -40,13 +40,18 @@
 import {useUserStore} from "@/store/user.js";
 import {useAppStore} from "@/store";
 import {storeToRefs} from "pinia";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 
 const userStore = useUserStore();
 const appStore = useAppStore();
 const {information} = storeToRefs(userStore);
 const {showRightNav, showRailNav,expandNav} = storeToRefs(appStore);
-
+const fullname=computed(()=>{
+    if (information.value.firstname!=undefined &&information.value.firstname!='' && information.value.lastname!=undefined && information.value.lastname!='')
+        return information.value.firstname + ' ' + information.value.lastname;
+    else
+        return information.value.username;
+})
 const isLoadingUserInformation = ref(false);
 function getUserInfo(){
     isLoadingUserInformation.value = true;

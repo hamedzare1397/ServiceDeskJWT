@@ -1,10 +1,11 @@
 import {defineStore} from 'pinia'
 import {inject, ref} from "vue";
-import {useRouter} from "vue-router";
+import router from '../router';
+import {useApi} from '../compositions/CallApi.vue'
 
 export const useUserStore = defineStore('user', () => {
-    const router = useRouter();
     const authStore = useAuthStore();
+    const api = useApi();
 
     const information = ref({
         avatar:'',
@@ -15,19 +16,19 @@ export const useUserStore = defineStore('user', () => {
     }
     async function getNavigations(){
         try {
-            let response = await axios.post('api/user/navigation');
+            let response = await api.post('navigation');
             if (response.status == 200) {
                 navigations.value = response.data;
             }
         }catch (ex)
         {
-            authStore.setToken();
+
         }
     }
     async function getData()
     {
         try {
-            let response = await axios.get('api/user/myInfo');
+            let response = await api.post('information');
             information.value = response.data;
         }catch (err)
         {
@@ -44,6 +45,7 @@ export const useUserStore = defineStore('user', () => {
 });
 
 export const useAuthStore = defineStore('user-auth', () => {
+    const api = useApi();
     const token = ref(null);
     const userStore = useUserStore();
     // const router = useRouter();
@@ -51,22 +53,23 @@ export const useAuthStore = defineStore('user-auth', () => {
     function setToken(val)
     {
         token.value = val;
-        axios.defaults.headers.authorization = `bearer ${val}`;
+        api.setAuthorization(`bearer ${val}`);
     }
-
+    function getToken() {
+        return token.value;
+    }
     async function login(person){
-        let response = await axios.post('/api/login', person);
+        let response = await api.post('/login', person);
         if (response.status == 200) {
             userStore.setInformation(response.data.user);
             setToken(response.data.authorisation.token);
             localStorage.setItem('token', response.data.authorisation.token);
-            // debugger;
-            router.push({name: 'dashboard'});
+            router.push({name: 'App'});
         }
         return true;
     }
     async function logout(){
-        let response=await axios.post('/api/logout');
+        let response=await api.post('/logout');
         if (response.status == 200 || response.status==401) {
             userStore.setInformation(null);
             setToken(null);
@@ -78,7 +81,7 @@ export const useAuthStore = defineStore('user-auth', () => {
 
     return {
         //functions
-        setToken, login, logout,
+        setToken, getToken, login, logout,
         //variables
         token
     };

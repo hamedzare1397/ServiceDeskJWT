@@ -1,11 +1,27 @@
-import { loadFonts } from './webfontloader'
-import {createPinia} from "pinia";
 import vuetify from "./vuetify";
+import { loadFonts } from './webfontloader'
+import {createPinia} from "pinia/dist/pinia";
+import colors from 'vuetify/lib/util/colors'
+import Vue3PersianDatetimePicker from "vue3-persian-datetime-picker";
 
 const pinia = createPinia();
 
+
 export default async function registerPlugin(app){
-    loadFonts();
+    loadFonts()
     app.use(vuetify)
-        .use(pinia);
+        .use(pinia)
+        .use(Vue3PersianDatetimePicker,{
+            name:'PDatePicker',
+            props:{
+                format: 'YYYY-MM-DD',
+                displayFormat: 'jYYYY-jMM-jDD',
+                editable: false,
+                inputClass: 'v-field__input',
+                placeholder: 'انتخاب تاریخ',
+                altFormat: 'YYYY-MM-DD',
+                color: colors.green.darken1,
+                autoSubmit: false,
+            }
+        });
 }

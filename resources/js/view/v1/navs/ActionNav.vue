@@ -1,10 +1,13 @@
 <template>
         <v-list v-model:opened="open">
             <template  v-for="nav in navigations">
-            <v-list-item
-               v-if="nav.childs.length<=0"
-                prepend-icon="nav.icon.icon" :title="nav.title"></v-list-item>
-
+                <router-link v-slot="{ isActive, href, navigate }" v-if="nav.childs.length<=0"
+                             :to="{name:nav.linkName}"
+                >
+                    <v-list-item
+                        :prepend-icon="nav.icon.icon" :title="nav.title">
+                    </v-list-item>
+                </router-link>
             <v-list-group v-else :value="nav.name">
                 <template v-slot:activator="{ props }">
                     <v-list-item

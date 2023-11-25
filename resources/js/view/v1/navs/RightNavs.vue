@@ -19,7 +19,7 @@
                             density="compact"
                             :icon="showRailNav?'mdi-pin-off':'mdi-pin'"
                             size="small"
-                            @click="showFooter=!showFooter"></v-btn-close>
+                            @click="userStore.getNavigations()"></v-btn-close>
                     </template>
                 </v-list-item>
             </v-list>

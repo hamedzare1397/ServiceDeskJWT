@@ -55,7 +55,7 @@ async function login(){
     authStore.login(person)
         .then(response => {
             if (response.status == 200) {
-                router.push({name:'dashboard'});
+                router.push({name:'App.Dashboard'});
             }
         })
         .catch(err=>{

@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use \App\Http\Controllers\Auth\AuthController;
+use \App\Http\Controllers\NavigationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,12 +16,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::controller(\App\Http\Controllers\Auth\AuthController::class)->group(function () {
+Route::prefix('/user')
+    ->controller(\App\Http\Controllers\UserController::class)
+    ->group(function(){
+        Route::post('', 'index')->name('index');
+    })
+    ->name('user')
+;
+
+Route::prefix('navigation')
+    ->controller(NavigationController::class)->group(function () {
+        Route::post('', 'index')->name('.index');
+    })
+    ->name('navigation');
+
+Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
+    Route::post('information', 'information');
 });

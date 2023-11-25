@@ -33,6 +33,7 @@
         "v-network-graph": "^0.9.13",
         "vue-codemirror": "^4.0.6",
         "vue-router": "^3.0.6",
+        "vue3-persian-datetime-picker": "^1.2.2",
         "vuex": "^3.1.1",
         "webfontloader": "^1.6.28"
     },

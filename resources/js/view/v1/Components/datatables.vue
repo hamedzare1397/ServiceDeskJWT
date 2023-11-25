@@ -3,20 +3,20 @@
         <v-table density="compact" :id="TableName">
             <caption>
                 <slot name="caption"></slot>
-                <v-progress-linear
-                    v-show="loading"
-                    indeterminate
-                ></v-progress-linear>
-            </caption>
+                    <v-progress-linear
+                        v-show="loading && loadingType=='linear'"
+                    ></v-progress-linear>
+                </caption>
             <thead>
-            <tr class="pa-0" v-if="loadingType=='linear'">
+            <tr class="pa-0" >
                 <th :colspan="headers.length+headersPrepend.length+headersAppend.length">
                     <v-pagination
+                        v-if="items.length>0"
+                        @update:modelValue="updatePaginate"
                         v-model="page"
                         :density="density"
                         :length="Math.ceil(total/perPage)"
                         :total-visible="TotalVisible"
-                        @update:modelValue="updatePaginate"
                     ></v-pagination>
                 </th>
             </tr>
@@ -27,6 +27,15 @@
             </tr>
             </thead>
             <tbody>
+            <tr>
+                <td v-if="items.length<=0" :colspan="headers.length+headersAppend.length">
+                    <div class="text-center">
+                        <h1>داده جهت نمایش وجود ندارد</h1>
+                        <v-icon size="256">mdi-not-equal</v-icon>
+                    </div>
+
+                </td>
+            </tr>
             <tr v-for="(item,index) in items" v-key="item.key">
 
                 <td v-for="col in headersPrepend" v-key="col.key" :index="index">
@@ -60,7 +69,7 @@
 </template>
 
 <script setup>
-import {ref, defineProps, watch, reactive, defineEmits} from 'vue';
+import {ref, defineProps, watch, defineEmits} from 'vue';
 const props=defineProps({
     ShowType:{
         default:'datatable',
@@ -102,9 +111,11 @@ const props=defineProps({
         type:Array
     },
     items:{
+        default:[],
         type:Array
     },
     page:{
+        default:1,
         type:Number
     },
     perPage:{
@@ -115,7 +126,7 @@ const props=defineProps({
     }
 });
 const emits=defineEmits(['update:page'])
-const page= ref(props.page);
+const page= ref(props.modelValue);
 const ShowType=ref(props.ShowType)
 const dataLoading = ref(props.loading);
 function updatePaginate(event){
@@ -123,6 +134,7 @@ function updatePaginate(event){
     emits('update:page', event);
 }
 watch(()=>props.page, (newVal,oldValue) => {
+    // updatePaginate(newVal);
     return page.value = newVal;
 });
 watch(()=>props.loading , (newVal,oldValue) => {

@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -18,7 +19,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
     ];
@@ -31,6 +31,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'api_token',
+        'created_at',
+        'deleted_at',
+        'pass',
+        'updated_at',
+        'verified_at',
     ];
 
     /**
@@ -57,5 +63,34 @@ class User extends Authenticatable
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function getIsAdminAttribute()
+    {
+        return $this->admin == '1';
+    }
+    public function getNavigationsAttribute()
+    {
+        $pubNav = [
+                [
+                    'icon'=> ['icon'=>'mdi-home'],
+                    'title'=>'داشبورد',
+                    'childs'=>[],
+                    'linkName'=>'App.Dashboard',
+                ]
+            ];
+        return $this->isAdmin ?
+            [
+                ...$pubNav,
+                [
+                    'icon'=> ['icon'=>'mdi-cogs'],
+                    'title'=>'تنظیمات',
+                    'childs'=>[],
+                    'linkName'=>'App.Setting',
+                ],
+                ]:
+            [
+                ...$pubNav,
+            ];
     }
 }

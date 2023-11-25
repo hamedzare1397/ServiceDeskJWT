@@ -2,18 +2,20 @@
 
 namespace App\Guards;
 
+use \PHPOpenSourceSaver\JWTAuth\JWTGuard as JWTGuardBase;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Http\Request;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
+use PHPOpenSourceSaver\JWTAuth\JWT;
 
-class JWTGuard extends \PHPOpenSourceSaver\JWTAuth\JWTGuard
+class JWTGuard extends JWTGuardBase
 {
     public function attempt(array $credentials = [], $login = true)
     {
         $this->lastAttempted = $user = $this->provider->retrieveByCredentials($credentials);
 
         $this->fireAttemptEvent($credentials);
-
         if ($this->hasValidCredentials($user, $credentials)) {
-            dd($this->login($user));
             return $login ? $this->login($user) : true;
         }
 
@@ -35,7 +37,6 @@ class JWTGuard extends \PHPOpenSourceSaver\JWTAuth\JWTGuard
     public function setToken($token)
     {
         $this->jwt->setToken($token);
-        dd($token);
 
         return $this;
     }
