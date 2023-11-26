@@ -30,7 +30,26 @@ Route::prefix('/ostan')
         Route::post('', 'index')->name('.index');
         Route::post('update', 'update')->name('.update');
     })
-    ->name('user')
+    ->name('ostan');
+Route::prefix('/news')
+    ->controller(\App\Http\Controllers\NewsController::class)
+    ->group(function(){
+        Route::post('', 'index')->name('.index');
+        Route::post('update', 'update')->name('.update');
+        Route::post('store', 'store')->name('.store');
+        Route::post('delete', 'delete')->name('.delete');
+    })
+    ->name('news')
+;
+Route::prefix('/coeficient')
+    ->controller(\App\Http\Controllers\NewsController::class)
+    ->group(function(){
+        Route::post('', 'index')->name('.index');
+        Route::post('update', 'update')->name('.update');
+        Route::post('store', 'store')->name('.store');
+        Route::post('delete', 'delete')->name('.delete');
+    })
+    ->name('coeficient')
 ;
 
 Route::prefix('navigation')

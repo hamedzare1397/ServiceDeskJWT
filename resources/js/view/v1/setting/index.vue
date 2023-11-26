@@ -7,6 +7,8 @@ const router = useRouter();
 const items = [
     {title:'کاربران',icon:'mdi-account-group',linkName:"App.Setting.User"},
     {title:'استان',icon:'mdi-account',linkName:"App.Setting.Ostan"},
+    {title:'نوع خبر',icon:'mdi-account',linkName:"App.Setting.News"},
+    {title:'ضرایب',icon:'mdi-account',linkName:"App.Setting.Coefficient"},
 ];
 const isSettingPage=computed(()=>{
     return router.currentRoute;

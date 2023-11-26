@@ -17,6 +17,16 @@ export default [
                         path:'oastn',
                         name:'App.Setting.Ostan',
                         component: () => import('@/view/v1/setting/ostan/index.vue')
+                    },
+                    {
+                        path:'news',
+                        name:'App.Setting.News',
+                        component: () => import('@/view/v1/setting/news/index.vue')
+                    },
+                    {
+                        path:'coefficient',
+                        name:'App.Setting.Coefficient',
+                        component: () => import('@/view/v1/setting/coefficient/index.vue')
                     }
 
                 ]
