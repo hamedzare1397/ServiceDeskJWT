@@ -19,7 +19,16 @@ use \App\Http\Controllers\NavigationController;
 Route::prefix('/user')
     ->controller(\App\Http\Controllers\UserController::class)
     ->group(function(){
-        Route::post('', 'index')->name('index');
+        Route::post('', 'index')->name('.index');
+        Route::post('update', 'update')->name('.update');
+    })
+    ->name('user')
+;
+Route::prefix('/ostan')
+    ->controller(\App\Http\Controllers\OstanController::class)
+    ->group(function(){
+        Route::post('', 'index')->name('.index');
+        Route::post('update', 'update')->name('.update');
     })
     ->name('user')
 ;

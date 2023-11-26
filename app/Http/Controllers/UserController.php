@@ -16,4 +16,9 @@ class UserController extends Controller
                 ->paginate($perPage,'*','user-page',$page);
         }
     }
+
+    public function update(Request $request)
+    {
+        $request->dd();
+    }
 }

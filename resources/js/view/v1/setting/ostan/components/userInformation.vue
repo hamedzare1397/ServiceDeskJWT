@@ -1,33 +1,38 @@
 <template>
     <v-card>
-        <v-card-title class="bg-secondary w-25 rounded-e-circle">{{item.firstname}} {{item.lastname}}</v-card-title>
+
         <v-card-text>
-            <v-row>
-                <v-col cols="12" md="6">
-                    <v-list>
+            <v-row class="bg-amber rounded-shaped">
+                <v-col cols="12"><v-card-title class="rounded-pill text-center">{{item.firstname}} {{item.lastname}}</v-card-title></v-col>
+                <v-col cols="12" sm="6">
+                    <v-list class="rounded-shaped  v-card">
+                        <v-list-item>
+                            <v-list-item-title>کدملی</v-list-item-title>
+                            <v-label>{{ item.nativeid }}</v-label>
+                        </v-list-item>
                         <v-list-item>
                             <v-list-item-title>شماره همراه:</v-list-item-title>
-                            <v-label>{{ item.phone }}</v-label>
+                            <v-label>{{ item.mobile }}</v-label>
                         </v-list-item>
                         <v-list-item>
                             <v-list-item-title>پست الکترونیکی:</v-list-item-title>
                             <v-label>{{ item.email }}</v-label>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title>پست الکترونیکی:</v-list-item-title>
-                            <v-label>{{ item.email }}</v-label>
+                            <v-list-item-title>آدرس</v-list-item-title>
+                            <v-label>{{ item.address }}</v-label>
                         </v-list-item>
                     </v-list>
                 </v-col>
-                <v-col cols="12" md="6">
-                    <v-list>
+                <v-col cols="12" sm="6">
+                    <v-list  class="rounded-shaped v-card">
                         <v-list-item>
-                            <v-list-item-title>شماره همراه:</v-list-item-title>
+                            <v-list-item-title>تلفن ثابت:</v-list-item-title>
                             <v-label>{{ item.phone }}</v-label>
                         </v-list-item>
                         <v-list-item>
-                            <v-list-item-title>پست الکترونیکی:</v-list-item-title>
-                            <v-label>{{ item.email }}</v-label>
+                            <v-list-item-title>کد پستی</v-list-item-title>
+                            <v-label>{{ item.zipCode }}</v-label>
                         </v-list-item>
                         <v-list-item>
                             <v-list-item-title>پست الکترونیکی:</v-list-item-title>

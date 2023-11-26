@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Ostan extends Model
 {
     use HasFactory;
+
+    protected $table = 'ostan';
 }

@@ -5,7 +5,8 @@ import {useRouter} from 'vue-router';
 const router = useRouter();
 
 const items = [
-    {title:'کاربران',icon:'mdi-account-group',linkName:"App.Setting.User"}
+    {title:'کاربران',icon:'mdi-account-group',linkName:"App.Setting.User"},
+    {title:'استان',icon:'mdi-account',linkName:"App.Setting.Ostan"},
 ];
 const isSettingPage=computed(()=>{
     return router.currentRoute;
@@ -15,12 +16,12 @@ const isSettingPage=computed(()=>{
     <v-sheet v-if="isSettingPage.value.name=='App.Setting'" class="ma-3">
         <v-row>
             <template v-for="item in items">
-            <v-col cols="12" sm="6" md="3" v-for="item in items">
+            <v-col cols="12" sm="6" md="3">
             <router-link
                 v-slot="{ isActive, href, navigate }"
                          :to="{name:item.linkName}"
             >
-                <v-card height="200" ripple class="bg-secondary">
+                <v-card height="200" ripple class="">
                     <div class="d-flex justify-center align-center">
                         <v-icon size="128">{{item.icon}}</v-icon>
                     </div>
@@ -37,7 +38,7 @@ const isSettingPage=computed(()=>{
         <router-view v-slot="{Component}">
             <component :is="Component">
             <template #toolbar>
-                <v-btn class="bg-pink" @click="router.push({name:'App.Setting'})" prepend-icon="mdi-cogs">تنظیمات</v-btn>
+                <v-btn class="" @click="router.push({name:'App.Setting'})" prepend-icon="mdi-cogs">تنظیمات</v-btn>
             </template>
             </component>
         </router-view>

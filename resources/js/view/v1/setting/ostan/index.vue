@@ -61,9 +61,9 @@ import userEdit from "./components/userEdit.vue";
 const api = useApi();
 const isLoading = ref(false);
 const header = reactive([
-    {title: 'نام', key: 'firstname'},
-    {title: 'نام خانوادگی', key: 'lastname'},
-    {title: 'نام کاربری', key: 'username'},
+    {title: 'نام استان', key: 'ostan'},
+    {title: 'سال', key: 'sal'},
+    {title: 'ماه', key: 'mah'},
 ]);
 const action_header = reactive([
     {title: 'نام', key: 'actions'},
@@ -74,7 +74,7 @@ const perPage = ref(10);
 function getUsers(event=1){
     page.value = event;
     isLoading.value = true;
-    api.post(`user?user-page=${page.value}`)
+    api.post(`ostan?ostan-page=${page.value}`)
         .then(response => {
             users.value = response.data;
         })
