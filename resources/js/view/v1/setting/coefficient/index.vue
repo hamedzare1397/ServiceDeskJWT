@@ -70,7 +70,8 @@ import DeleteElement from './components/delete.vue';
 const api = useApi();
 const isLoading = ref(false);
 const header = reactive([
-    {title: 'نام نوع خبر', key: 'title'},
+    {title: 'نام', key: 'name'},
+    {title: 'عنوان', key: 'title'},
 ]);
 const action_header = reactive([
     {title: 'عملیات', key: 'actions'},

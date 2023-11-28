@@ -15,10 +15,16 @@ class NewsController extends Controller
         $class = 'App\\Models\\'.Str::ucfirst($this->typeClass);
         $page = $request->query($this->typeClass.'-page', 1);
         $perPage = $request->query('perPage', 10);
-        if ($request->user()->isAdmin) {
-            return $class::query()->paginate($perPage,'*',$this->typeClass.'-page',$page);
-        }
+        return $class::query()->paginate($perPage,'*',$this->typeClass.'-page',$page);
     }
+    public function indexAll(Request $request)
+    {
+        $class = 'App\\Models\\'.Str::ucfirst($this->typeClass);
+        $page = $request->query($this->typeClass.'-page', 1);
+        $perPage = $request->query('perPage', 10);
+        return $class::query()->get();
+    }
+
     public function store(Request $request)
     {
         $this->typeClass = 'news';

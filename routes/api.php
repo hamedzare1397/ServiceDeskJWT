@@ -35,6 +35,7 @@ Route::prefix('/news')
     ->controller(\App\Http\Controllers\NewsController::class)
     ->group(function(){
         Route::post('', 'index')->name('.index');
+        Route::get('', 'indexAll')->name('.indexAll');
         Route::post('update', 'update')->name('.update');
         Route::post('store', 'store')->name('.store');
         Route::post('delete', 'delete')->name('.delete');
@@ -42,7 +43,7 @@ Route::prefix('/news')
     ->name('news')
 ;
 Route::prefix('/coeficient')
-    ->controller(\App\Http\Controllers\NewsController::class)
+    ->controller(\App\Http\Controllers\CoefficientController::class)
     ->group(function(){
         Route::post('', 'index')->name('.index');
         Route::post('update', 'update')->name('.update');
@@ -64,4 +65,20 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
     Route::post('information', 'information');
+});
+
+Route::get('vueComponent.vue', function () {
+    return response('
+    import {computed, ref, reactive} from "/node_modules/.vite/deps/vue.js"
+    import {usePost} from "/resources/js/compositions/CallApi.vue";
+
+    export async function testHamed(url){
+        const newsItems=ref([]);
+        let {data}=await usePost(\'news\');
+        newsItems.value=data.data;
+        return{newsItems};
+    }'
+    )
+        ->header('Content-Type','application/javascript')
+        ;
 });

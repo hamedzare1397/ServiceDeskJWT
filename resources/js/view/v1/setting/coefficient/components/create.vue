@@ -11,6 +11,13 @@
                     :type="field.type"
                 ></v-text-field>
             </template>
+            <template v-else-if="field.type=='select'">
+                <v-select
+                    v-model="data[field.name]"
+                    :label="field.title"
+                    :items="field.items"
+                ></v-select>
+            </template>
         </v-col>
         <v-col cols="12">
             <v-btn :loading="saveLoading" prepend-icon="mdi-content-save" @click.stop="save">ذخیره</v-btn>
@@ -20,14 +27,15 @@
 </template>
 
 <script setup>
-import {defineProps, defineEmits, computed,ref, reactive} from "vue";
-import {useApi} from '@/compositions/CallApi.vue';
+import {defineProps, defineEmits, computed, ref, reactive, h, render, onMounted} from "vue";
+import {useApi,usePost} from '@/compositions/CallApi.vue';
 const props=defineProps({
     apiAddress:{
         required:true,
         type:String,
     },
 })
+const tttt = testHamed('salam');
 const emits = defineEmits(['created']);
 const address = ref(props.apiAddress);
 const api = useApi();
@@ -40,8 +48,10 @@ const fields=computed(()=>{
     return [
         {name: 'name',title: 'نام', type:'text'},
         {name: 'title',title: 'عنوان', type:'text'},
+        {name: 'news_id',title: 'نوع خبر', type:'select', items:newsItems},
     ];
 })
+
 function save(){
     saveLoading.value = true;
     api.post(`${address.value}/store`,data)
@@ -53,6 +63,11 @@ function save(){
         });
 }
 
+const newsItems = ref([]);
+
+onMounted(async()=>{
+    newsItems.value=await api.get('news');
+})
 </script>
 
 <style scoped>

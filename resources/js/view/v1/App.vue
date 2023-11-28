@@ -32,22 +32,24 @@
 
 import {computed, inject, ref} from "vue";
 import RightNav from './navs/RightNavs.vue';
-
-import {useAppStore} from '@/store/index.js';
-
-const appName = inject('config').appName;
 import {storeToRefs} from 'pinia';
 import {useAuthStore} from "@/store/user.js";
+import {useAppStore} from '@/store/index.js';
+import router from '@/router';
+
+const appName = inject('config').appName;
 const appStore = useAppStore();
 const {showRightNav, showRailNav,showFooter} = storeToRefs(appStore);
 function setShowRightNav(val){
-    console.log(showRightNav);
     showRightNav.value = val;
 }
 
 const authStore=useAuthStore()
-function logout(){
-    authStore.logout();
+async function logout(){
+    let response = await authStore.logout();
+    if(response){
+        router.push({name: "Login"})
+    }
 }
 
 
