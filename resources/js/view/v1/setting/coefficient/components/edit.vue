@@ -11,6 +11,15 @@
                         :type="field.type"
                     ></v-text-field>
                 </template>
+                <template v-else-if="field.type=='select'">
+                    <v-select
+                        v-model="data[field.name]"
+                        :label="field.title"
+                        :items="field.items"
+                        item-value="id"
+                        density="compact"
+                    ></v-select>
+                </template>
             </v-col>
             <v-col cols="12">
                 <v-btn :loading="saveLoading" prepend-icon="mdi-content-save" @click.stop="save">ویرایش</v-btn>
@@ -20,7 +29,7 @@
 </template>
 
 <script setup>
-import {defineProps, defineEmits, computed,ref, reactive} from "vue";
+import {defineProps, defineEmits, computed, ref, reactive, onBeforeMount} from "vue";
 import {useApi} from '@/compositions/CallApi.vue';
 const props=defineProps({
     urlApi:{
@@ -40,11 +49,14 @@ const data = reactive(props.item);
 
 const saveLoading=ref(false)
 
+const newsItems = ref([]);
 const fields=computed(()=>{
     return [
         {name: 'name',title: 'نام', type:'text'},
         {name: 'title',title: 'عنوان', type:'text'},
-    ];
+        {name: 'news_id',title: 'نوع خبر', type:'select', items:newsItems.value},
+        {name: 'coefficient',title: 'مقدار ضریب', type:'number'},
+    ];;
 })
 function save(){
     saveLoading.value = true;
@@ -56,7 +68,12 @@ function save(){
             saveLoading.value = false;
         });
 }
-
+onBeforeMount(async()=>{
+    api.get('news')
+        .then(response=>{
+            newsItems.value = response.data;
+        })
+})
 </script>
 
 <style scoped>

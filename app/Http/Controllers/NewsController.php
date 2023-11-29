@@ -20,9 +20,7 @@ class NewsController extends Controller
     public function indexAll(Request $request)
     {
         $class = 'App\\Models\\'.Str::ucfirst($this->typeClass);
-        $page = $request->query($this->typeClass.'-page', 1);
-        $perPage = $request->query('perPage', 10);
-        return $class::query()->get();
+        return $class::all();
     }
 
     public function store(Request $request)

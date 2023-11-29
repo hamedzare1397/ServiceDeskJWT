@@ -67,18 +67,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('information', 'information');
 });
 
-Route::get('vueComponent.vue', function () {
-    return response('
-    import {computed, ref, reactive} from "/node_modules/.vite/deps/vue.js"
-    import {usePost} from "/resources/js/compositions/CallApi.vue";
-
-    export async function testHamed(url){
-        const newsItems=ref([]);
-        let {data}=await usePost(\'news\');
-        newsItems.value=data.data;
-        return{newsItems};
-    }'
-    )
-        ->header('Content-Type','application/javascript')
-        ;
-});
+Route::get('time', function () {
+    return now()->timestamp;
+})
+    ->name('time');

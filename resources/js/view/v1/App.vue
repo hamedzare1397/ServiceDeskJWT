@@ -6,7 +6,9 @@
                     <v-btn @click="showRightNav=!showRightNav" icon="mdi-menu"></v-btn>
                 </template>
                 <template v-slot:append>
-
+                    <v-alert density="compact" color="red">
+                        {{ h }}: {{ m }}: {{ s }}
+                    </v-alert>
                         <v-btn icon="mdi-account" size="small" rounded="circle" class="bg-amber"></v-btn>
                         <v-btn
                             icon="mdi-exit-to-app"
@@ -30,12 +32,16 @@
 
 <script setup>
 
-import {computed, inject, ref} from "vue";
+import {computed, inject, onMounted, ref, watch} from "vue";
 import RightNav from './navs/RightNavs.vue';
 import {storeToRefs} from 'pinia';
 import {useAuthStore} from "@/store/user.js";
 import {useAppStore} from '@/store/index.js';
 import router from '@/router';
+import {useGetTime} from './../../compositions/timeDateServer.vue';
+
+const {h,m,s} = useGetTime();
+const hour = ref(h);
 
 const appName = inject('config').appName;
 const appStore = useAppStore();
@@ -51,7 +57,11 @@ async function logout(){
         router.push({name: "Login"})
     }
 }
+const showTime=ref(null)
+const currentTime = ref();
+onMounted(()=>{
 
+})
 
 </script>
 

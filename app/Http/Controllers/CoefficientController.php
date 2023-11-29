@@ -15,12 +15,13 @@ class CoefficientController extends Controller
         $page = $request->query($this->typeClass.'-page', 1);
         $perPage = $request->query('perPage', 10);
         if ($request->user()->isAdmin) {
-            return $class::query()->paginate($perPage,'*',$this->typeClass.'-page',$page);
+            return $class::query()
+                ->with('news')
+                ->paginate($perPage,'*',$this->typeClass.'-page',$page);
         }
     }
     public function store(Request $request)
     {
-        $this->typeClass = 'news';
         $class = 'App\\Models\\'.Str::ucfirst($this->typeClass);
         $class::unguard();
         $stored=$class::create($request->all());
@@ -33,7 +34,7 @@ class CoefficientController extends Controller
         $class = 'App\\Models\\'.Str::ucfirst($this->typeClass);
         $class::unguard();
         $result=$class::find($request->id);
-        $data = $request->except(['id', 'edit', 'show','deletedShow', 'deleted_at', 'created_at', 'updated_at']);
+        $data = $request->except(['news','id', 'edit', 'show','deletedShow', 'deleted_at', 'created_at', 'updated_at', 'deleteShow']);
         if($result->update($data)){
             $class::reguard();
             return $result->refresh();

@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Coefficient extends Model
 {
     use HasFactory;
+
+    public function news()
+    {
+        return $this->belongsTo(News::class);
+    }
 }

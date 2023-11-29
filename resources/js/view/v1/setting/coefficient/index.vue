@@ -9,11 +9,9 @@
         <datatables :items="items.data"
                     :headers="header"
                     :loading="isLoading"
-                    :headers-append="[
-                        {key:'actions'},
-                    ]"
+                    :headers-append="action_header"
                     :headers-prepend="[
-                        {key:'row'},
+                        {key:'row',title:'ردیف'},
                     ]"
                     :total="items.total"
                     :page="page"
@@ -23,12 +21,17 @@
             <template #row="{index}">
                 <td>{{ (index+1)+((page-1)*perPage) }}</td>
             </template>
+            <template #news="{item}">
+                <td>{{item.news.title}}</td>
+            </template>
             <template #actions="{item}">
-                <v-btn-group density="compact">
-                    <v-btn @click="item.edit=!item.edit;item.show=false;item.deleteShow=false" icon="mdi-pencil"></v-btn>
-                    <v-btn @click="item.show=!item.show;item.edit=false;item.deleteShow=false" icon="mdi-badge-account-outline"></v-btn>
-                    <v-btn @click="item.deleteShow=!item.deleteShow;item.edit=false;item.show=false" icon="mdi-trash-can-outline" class="text-error" size="small"></v-btn>
-                </v-btn-group>
+                <td>
+                    <v-btn-group density="compact">
+                        <v-btn @click="item.edit=!item.edit;item.show=false;item.deleteShow=false" icon="mdi-pencil"></v-btn>
+                        <v-btn @click="item.show=!item.show;item.edit=false;item.deleteShow=false" icon="mdi-badge-account-outline"></v-btn>
+                        <v-btn @click="item.deleteShow=!item.deleteShow;item.edit=false;item.show=false" icon="mdi-trash-can-outline" class="text-error" size="small"></v-btn>
+                    </v-btn-group>
+                </td>
             </template>
             <template #underRow="{item,colspan}">
                 <transition-group
@@ -72,8 +75,10 @@ const isLoading = ref(false);
 const header = reactive([
     {title: 'نام', key: 'name'},
     {title: 'عنوان', key: 'title'},
+    {title: 'ضریب', key: 'coefficient'},
 ]);
 const action_header = reactive([
+    {title: 'نوع خبر', key: 'news'},
     {title: 'عملیات', key: 'actions'},
 ]);
 const items = ref([]);

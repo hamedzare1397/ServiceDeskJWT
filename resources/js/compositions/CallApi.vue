@@ -18,7 +18,7 @@ export function useApi(){
 
     function get(url,config={}){
         url = 'api/' + url + `?token=${useAuth.getToken()}`;
-        return axios.post(url, data, config);
+        return axios.get(url, config);
     }
     function setAuthorization(token){
         axios.defaults.headers.common['Authorization'] = token;

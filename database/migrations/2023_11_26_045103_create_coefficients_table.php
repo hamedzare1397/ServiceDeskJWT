@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('coefficients', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\News::class);
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('title')->unique();
-            $table->string('coefficent');
+            $table->string('coefficient');
             $table->timestamps();
         });
     }

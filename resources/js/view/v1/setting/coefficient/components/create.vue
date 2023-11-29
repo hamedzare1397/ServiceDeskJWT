@@ -16,6 +16,8 @@
                     v-model="data[field.name]"
                     :label="field.title"
                     :items="field.items"
+                    item-value="id"
+                    density="compact"
                 ></v-select>
             </template>
         </v-col>
@@ -27,7 +29,7 @@
 </template>
 
 <script setup>
-import {defineProps, defineEmits, computed, ref, reactive, h, render, onMounted} from "vue";
+import {defineProps, defineEmits, computed, ref, reactive, h, render, onMounted, onBeforeMount} from "vue";
 import {useApi,usePost} from '@/compositions/CallApi.vue';
 const props=defineProps({
     apiAddress:{
@@ -35,7 +37,6 @@ const props=defineProps({
         type:String,
     },
 })
-const tttt = testHamed('salam');
 const emits = defineEmits(['created']);
 const address = ref(props.apiAddress);
 const api = useApi();
@@ -43,12 +44,13 @@ const api = useApi();
 const data = reactive({});
 
 const saveLoading=ref(false)
-
+const newsItems = ref([]);
 const fields=computed(()=>{
     return [
         {name: 'name',title: 'نام', type:'text'},
         {name: 'title',title: 'عنوان', type:'text'},
-        {name: 'news_id',title: 'نوع خبر', type:'select', items:newsItems},
+        {name: 'news_id',title: 'نوع خبر', type:'select', items:newsItems.value},
+        {name: 'coefficient',title: 'مقدار ضریب', type:'number'},
     ];
 })
 
@@ -63,10 +65,11 @@ function save(){
         });
 }
 
-const newsItems = ref([]);
-
-onMounted(async()=>{
-    newsItems.value=await api.get('news');
+onBeforeMount(async()=>{
+        api.get('news')
+            .then(response=>{
+                newsItems.value = response.data;
+            })
 })
 </script>
 
