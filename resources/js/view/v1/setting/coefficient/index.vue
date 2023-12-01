@@ -4,7 +4,7 @@
         <slot name="toolbar"></slot>
         <v-btn icon="mdi-refresh" :loading="isLoading" @click="getData(page)"></v-btn>
     </v-toolbar>
-    <create-element api-address="coeficient" @created="getData(1)"></create-element>
+    <create-element api-address="coefficient" @created="getData(1)"></create-element>
     <v-sheet class="bg-amber h-100">
         <datatables :items="items.data"
                     :headers="header"
@@ -41,7 +41,7 @@
                 >
                 <tr v-if="item.deleteShow">
                     <td :colspan="colspan">
-                        <delete-element url-api="coeficient" :item="item" @deleted="getData(page.value)"></delete-element>
+                        <delete-element url-api="coefficient" :item="item" @deleted="getData(page.value)"></delete-element>
                     </td>
                 </tr>
                 <tr v-if="item.show">
@@ -51,7 +51,7 @@
                 </tr>
                 <tr v-if="item?.edit">
                     <td :colspan="colspan">
-                        <edit-page url-api="coeficient" :item="item" @updated="getData(1)"></edit-page>
+                        <edit-page url-api="coefficient" :item="item" @updated="getData(1)"></edit-page>
                     </td>
                 </tr>
                 </transition-group>
@@ -88,7 +88,7 @@ const perPage = ref(10);
 function getData(event=1){
     page.value = event;
     isLoading.value = true;
-    api.post(`coeficient?coeficient-page=${page.value}`)
+    api.post(`coefficient?coefficient-page=${page.value}`)
         .then(response => {
             items.value = response.data;
         })

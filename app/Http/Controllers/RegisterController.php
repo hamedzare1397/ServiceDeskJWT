@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Register;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Coefficient;
 
-class CoefficientController extends Controller
+class RegisterController extends Controller
 {
-    protected $typeClass = 'coefficient';
+    protected $typeClass = 'register';
     public function index(Request $request)
     {
         $class = 'App\\Models\\'.Str::ucfirst($this->typeClass);
@@ -21,10 +23,25 @@ class CoefficientController extends Controller
         }
     }
 
-    public function indexAll(Request $request)
+    public function edit(Request $request)
     {
+        $coefficeint=$request->input('coefficeint');
+        $yaerMonth=$request->input('yearMonth');
         $class = 'App\\Models\\'.Str::ucfirst($this->typeClass);
-        return $class::all();
+        $query = Register::query()
+            ->rightJoin('states','states.id','=','registers.state_id')
+            ->where('year_month','=',$yaerMonth);
+        $query->with([
+            'state',
+            'coefficient'=>function($query) use ($coefficeint){
+                $query->where('id','=',$coefficeint);
+            },
+            'news'
+        ]);
+
+
+//        $query->get();
+        return $query->get();
     }
 
     public function store(Request $request)

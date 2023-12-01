@@ -9,6 +9,7 @@ const items = [
     {title:'استان',icon:'mdi-account',linkName:"App.Setting.Ostan"},
     {title:'نوع خبر',icon:'mdi-account',linkName:"App.Setting.News"},
     {title:'ضرایب',icon:'mdi-account',linkName:"App.Setting.Coefficient"},
+    {title:'ثبت امتیازات',icon:'mdi-account',linkName:"App.Setting.Register"},
 ];
 const isSettingPage=computed(()=>{
     return router.currentRoute;

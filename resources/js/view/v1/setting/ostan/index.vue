@@ -2,31 +2,36 @@
 <v-sheet>
     <v-toolbar>
         <slot name="toolbar"></slot>
-        <v-btn icon="mdi-refresh" :loading="isLoading" @click="getUsers(page)"></v-btn>
+        <v-btn icon="mdi-refresh" :loading="isLoading" @click="getData(page)"></v-btn>
     </v-toolbar>
+    <create-element api-address="state" @created="getData(1)"></create-element>
     <v-sheet class="bg-amber h-100">
-        <datatables :items="users.data"
+        <datatables :items="items.data"
                     :headers="header"
                     :loading="isLoading"
-                    :headers-append="[
-                        {key:'actions'},
-                    ]"
+                    :headers-append="action_header"
                     :headers-prepend="[
-                        {key:'row'},
+                        {key:'row',title:'ردیف'},
                     ]"
-                    :total="users.total"
+                    :total="items.total"
                     :page="page"
                     :perPage="perPage"
-                    @update:page="getUsers"
+                    @update:page="getData"
         >
             <template #row="{index}">
                 <td>{{ (index+1)+((page-1)*perPage) }}</td>
             </template>
+            <template #news="{item}">
+                <td>{{item.news.title}}</td>
+            </template>
             <template #actions="{item}">
-                <v-btn-group density="compact">
-                    <v-btn @click="item.edit=!item.edit;item.show=false" icon="mdi-pencil"></v-btn>
-                    <v-btn @click="item.show=!item.show;item.edit=false" icon="mdi-badge-account-outline"></v-btn>
-                </v-btn-group>
+                <td>
+                    <v-btn-group density="compact">
+                        <v-btn @click="item.edit=!item.edit;item.show=false;item.deleteShow=false" icon="mdi-pencil"></v-btn>
+                        <v-btn @click="item.show=!item.show;item.edit=false;item.deleteShow=false" icon="mdi-badge-account-outline"></v-btn>
+                        <v-btn @click="item.deleteShow=!item.deleteShow;item.edit=false;item.show=false" icon="mdi-trash-can-outline" class="text-error" size="small"></v-btn>
+                    </v-btn-group>
+                </td>
             </template>
             <template #underRow="{item,colspan}">
                 <transition-group
@@ -34,14 +39,19 @@
                     enter-active-class="animate__animated animate__bounceInRight"
                     leave-active-class="animate__animated animate__bounceOutRight"
                 >
+                <tr v-if="item.deleteShow">
+                    <td :colspan="colspan">
+                        <delete-element url-api="state" :item="item" @deleted="getData(page.value)"></delete-element>
+                    </td>
+                </tr>
                 <tr v-if="item.show">
                     <td :colspan="colspan">
-                        <user-info :item="item"></user-info>
+                        <edit-page url-api="state" :item="item" @updated="getData(1)"></edit-page>
                     </td>
                 </tr>
                 <tr v-if="item?.edit">
                     <td :colspan="colspan">
-                        <user-edit :item="item"></user-edit>
+                        <edit-page url-api="state" :item="item" @updated="getData(1)"></edit-page>
                     </td>
                 </tr>
                 </transition-group>
@@ -54,29 +64,30 @@
 <script setup>
 import {onMounted, reactive, ref} from "vue";
 import Datatables from "./../../Components/datatables.vue";
-import {useApi} from "@/compositions/CallApi.vue";
-import userInfo from "./components/userInformation.vue";
-import userEdit from "./components/userEdit.vue";
+import {useApi} from '@/compositions/CallApi.vue';
+
+import EditPage from "./components/edit.vue";
+import CreateElement from './components/create.vue';
+import DeleteElement from './components/delete.vue';
 
 const api = useApi();
 const isLoading = ref(false);
 const header = reactive([
-    {title: 'نام استان', key: 'ostan'},
-    {title: 'سال', key: 'sal'},
-    {title: 'ماه', key: 'mah'},
+    {title: 'عنوان', key: 'title'},
 ]);
 const action_header = reactive([
-    {title: 'نام', key: 'actions'},
+    {title: 'عملیات', key: 'actions'},
 ]);
-const users = ref([]);
+const items = ref([]);
 const page = ref(1);
+const dialogShow = ref(false);
 const perPage = ref(10);
-function getUsers(event=1){
+function getData(event=1){
     page.value = event;
     isLoading.value = true;
-    api.post(`ostan?ostan-page=${page.value}`)
+    api.post(`state?state-page=${page.value}`)
         .then(response => {
-            users.value = response.data;
+            items.value = response.data;
         })
     .finally(()=>{
         isLoading.value = false;
@@ -85,7 +96,7 @@ function getUsers(event=1){
 }
 
 onMounted(()=>{
-    getUsers();
+    getData();
 })
 </script>
 

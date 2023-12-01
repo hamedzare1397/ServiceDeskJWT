@@ -27,6 +27,11 @@ export default [
                         path:'coefficient',
                         name:'App.Setting.Coefficient',
                         component: () => import('@/view/v1/setting/coefficient/index.vue')
+                    },
+                    {
+                        path:'register',
+                        name:'App.Setting.Register',
+                        component: () => import('@/view/v1/setting/registerVal/index.vue')
                     }
 
                 ]

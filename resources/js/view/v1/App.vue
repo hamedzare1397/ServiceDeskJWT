@@ -6,9 +6,10 @@
                     <v-btn @click="showRightNav=!showRightNav" icon="mdi-menu"></v-btn>
                 </template>
                 <template v-slot:append>
-                    <v-alert density="compact" color="red">
-                        {{ h }}: {{ m }}: {{ s }}
-                    </v-alert>
+                    <v-row>
+                        <v-col class="ma-n2" cols="12">{{ h }}</v-col>
+                        <v-col class="ma-n2" cols="12">{{ d }}</v-col>
+                    </v-row>
                         <v-btn icon="mdi-account" size="small" rounded="circle" class="bg-amber"></v-btn>
                         <v-btn
                             icon="mdi-exit-to-app"
@@ -38,10 +39,9 @@ import {storeToRefs} from 'pinia';
 import {useAuthStore} from "@/store/user.js";
 import {useAppStore} from '@/store/index.js';
 import router from '@/router';
-import {useGetTime} from './../../compositions/timeDateServer.vue';
+import {useApi} from '@/compositions/CallApi.vue';
 
-const {h,m,s} = useGetTime();
-const hour = ref(h);
+const api = useApi();
 
 const appName = inject('config').appName;
 const appStore = useAppStore();
@@ -57,12 +57,30 @@ async function logout(){
         router.push({name: "Login"})
     }
 }
-const showTime=ref(null)
-const currentTime = ref();
-onMounted(()=>{
 
+
+import moment from 'moment-jalaali';
+
+const timeStampFull = ref(null);
+const h = ref(0);
+const d = ref(0);
+api.get('time')
+    .then(response=>{
+        if (response.status == 200) {
+            timeStampFull.value = Number(response.data)* 1000;
+            setInterval(startTime, 1000);
+        }
+    });
+
+function startTime(){
+    timeStampFull.value += 1000;
+}
+
+watch(timeStampFull,(newVal)=>{
+    const tim=moment(newVal);
+    h.value=tim.format('h:mm:ss A')
+    d.value=tim.format('L')
 })
-
 </script>
 
 <style scoped>

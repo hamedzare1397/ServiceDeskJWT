@@ -12,7 +12,7 @@
                         {key:'actions'},
                     ]"
                     :headers-prepend="[
-                        {key:'row'},
+                        {key:'row',title:'ردیف'},
                     ]"
                     :total="users.total"
                     :page="page"

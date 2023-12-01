@@ -21,7 +21,7 @@ export default async function registerPlugin(app){
                 inputClass: 'v-field__input',
                 placeholder: 'انتخاب تاریخ',
                 altFormat: 'YYYY-MM-DD',
-                color: colors.green.darken1,
+                color: colors.blueGrey.base,
                 autoSubmit: false,
             }
         });

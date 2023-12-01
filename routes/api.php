@@ -24,14 +24,19 @@ Route::prefix('/user')
     })
     ->name('user')
 ;
-Route::prefix('/ostan')
-    ->controller(\App\Http\Controllers\OstanController::class)
-    ->group(function(){
+Route::prefix('/state')
+    ->name('state')
+    ->controller(\App\Http\Controllers\StateController::class)
+    ->group(function () {
         Route::post('', 'index')->name('.index');
+        Route::get('', 'indexAll')->name('.indexAll');
         Route::post('update', 'update')->name('.update');
-    })
-    ->name('ostan');
+        Route::post('store', 'store')->name('.store');
+        Route::post('delete', 'delete')->name('.delete');
+    });
+
 Route::prefix('/news')
+    ->name('news')
     ->controller(\App\Http\Controllers\NewsController::class)
     ->group(function(){
         Route::post('', 'index')->name('.index');
@@ -40,17 +45,17 @@ Route::prefix('/news')
         Route::post('store', 'store')->name('.store');
         Route::post('delete', 'delete')->name('.delete');
     })
-    ->name('news')
 ;
-Route::prefix('/coeficient')
+Route::prefix('/coefficient')
     ->controller(\App\Http\Controllers\CoefficientController::class)
     ->group(function(){
         Route::post('', 'index')->name('.index');
+        Route::get('', 'indexAll')->name('.indexAll');
         Route::post('update', 'update')->name('.update');
         Route::post('store', 'store')->name('.store');
         Route::post('delete', 'delete')->name('.delete');
     })
-    ->name('coeficient')
+    ->name('coefficient')
 ;
 
 Route::prefix('navigation')
@@ -71,3 +76,16 @@ Route::get('time', function () {
     return now()->timestamp;
 })
     ->name('time');
+
+
+Route::prefix('/register')
+    ->controller(\App\Http\Controllers\RegisterController::class)
+    ->group(function(){
+        Route::post('', 'index')->name('.index');
+        Route::post('edit', 'edit')->name('.edit');
+        Route::post('update', 'update')->name('.update');
+        Route::post('store', 'store')->name('.store');
+        Route::post('delete', 'delete')->name('.delete');
+    })
+    ->name('register')
+;
