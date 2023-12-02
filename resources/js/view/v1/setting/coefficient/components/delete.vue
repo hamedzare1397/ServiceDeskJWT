@@ -1,13 +1,10 @@
 <template>
     <v-card>
-        <v-card-title class="bg-error">حذف {{ item.title }}</v-card-title>
+        <v-card-title class="bg-error">حذف {{ item.name }}</v-card-title>
         <v-card-text>
             <p class="my-3">
                 آیا از حذف نوع خبر با نام
                     <strong class="font-weight-bold text-white rounded-pill px-2 bg-error">{{item.name}}</strong>
-                و
-                    با عنوان
-                    <strong class="font-weight-bold text-white rounded-pill px-2 bg-error">{{item.title}}</strong>
                 اطمینان دارید؟
             </p>
         </v-card-text>

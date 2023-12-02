@@ -43,7 +43,6 @@ const saveLoading=ref(false)
 const fields=computed(()=>{
     return [
         {name: 'name',title: 'نام', type:'text'},
-        {name: 'title',title: 'عنوان', type:'text'},
     ];
 })
 function save(){

@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(\App\Models\News::class);
             $table->string('name');
-            $table->string('title')->unique();
             $table->string('coefficient');
             $table->timestamps();
         });

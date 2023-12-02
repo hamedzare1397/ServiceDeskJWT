@@ -22,7 +22,7 @@
                 <td>{{ (index+1)+((page-1)*perPage) }}</td>
             </template>
             <template #news="{item}">
-                <td>{{item.news.title}}</td>
+                <td>{{item.news.name}}</td>
             </template>
             <template #actions="{item}">
                 <td>
@@ -46,7 +46,6 @@
                 </tr>
                 <tr v-if="item.show">
                     <td :colspan="colspan">
-                        <user-info :item="item"></user-info>
                     </td>
                 </tr>
                 <tr v-if="item?.edit">
@@ -65,7 +64,6 @@
 import {onMounted, reactive, ref} from "vue";
 import Datatables from "./../../Components/datatables.vue";
 import {useApi} from '@/compositions/CallApi.vue';
-import userInfo from "./components/userInformation.vue";
 import EditPage from "./components/edit.vue";
 import CreateElement from './components/create.vue';
 import DeleteElement from './components/delete.vue';
@@ -74,7 +72,6 @@ const api = useApi();
 const isLoading = ref(false);
 const header = reactive([
     {title: 'نام', key: 'name'},
-    {title: 'عنوان', key: 'title'},
     {title: 'ضریب', key: 'coefficient'},
 ]);
 const action_header = reactive([

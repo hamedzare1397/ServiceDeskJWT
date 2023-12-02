@@ -53,7 +53,6 @@ const newsItems = ref([]);
 const fields=computed(()=>{
     return [
         {name: 'name',title: 'نام', type:'text'},
-        {name: 'title',title: 'عنوان', type:'text'},
         {name: 'news_id',title: 'نوع خبر', type:'select', items:newsItems.value},
         {name: 'coefficient',title: 'مقدار ضریب', type:'number'},
     ];;

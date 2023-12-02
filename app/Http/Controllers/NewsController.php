@@ -20,7 +20,7 @@ class NewsController extends Controller
     public function indexAll(Request $request)
     {
         $class = 'App\\Models\\'.Str::ucfirst($this->typeClass);
-        return $class::all();
+        return $class::get(['name as title','id']);
     }
 
     public function store(Request $request)

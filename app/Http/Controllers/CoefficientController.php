@@ -29,11 +29,12 @@ class CoefficientController extends Controller
             ->get('name');
 
         foreach ($coefficients as $item){
+
             $result->put($item->name, [
-                'news' => Coefficient::query()
+                'data' => Coefficient::query()
+                    ->with('news:name,id')
                     ->where('name', $item->name)
-                    ->with('news:id,name,title')
-                    ->get(['title','name','id']),
+                    ->get(['id','news_id','coefficient'])
             ]);
         }
         return $result;

@@ -12,7 +12,12 @@ onMounted(()=>{
     loadingCoefficient.value = true;
     api.get('coefficient')
     .then(response=>{
-        coefficientItems.value = response.data;
+        coefficientItems.value =
+            Object.entries(response.data).map(row=>{
+                let [title, {data}] = row;
+                console.log({title, data});
+                return {title, data}
+            });
     })
     .finally(()=>{
         loadingCoefficient.value = false;
@@ -29,12 +34,15 @@ onMounted(()=>{
             <v-col cols="12" sm="6" md="4">
                 <v-select
                     density="compact"
-                    :items="Object.entries(coefficientItems)"
-                    label="تیپ امتیازات"
-                    item-title="0"
+                    :items="coefficientItems"
                     return-object
+                    label="تیپ امتیازات"
                     v-model="coefficient"
-                ></v-select>
+                >
+                    <template v-slot:item="{props,item }">
+                        <v-list-item v-bind="props" ></v-list-item>
+                    </template>
+                </v-select>
             </v-col>
             <v-col cols="12" sm="6" md="4">
                 <PDatePicker
