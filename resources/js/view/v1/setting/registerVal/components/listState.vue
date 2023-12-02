@@ -1,6 +1,15 @@
 <template>
-    <pre>{{yearMonth}}</pre>
-    <pre>{{coefficient}}</pre>
+    <v-row v-for="(state,index) in states" :class="[index%2==0?'bg-secondary':'bg-primary']">
+        <v-col cols="12">
+            <v-label>استان {{state.title}}</v-label>
+        </v-col>
+        <v-col v-for="item in coefficient" >
+            <v-text-field label="استان" v-model="state.title" disabled></v-text-field>
+        </v-col>
+        <v-col cols="12">
+            <pre dir="ltr">{{coefficient}}</pre>
+        </v-col>
+    </v-row>
 </template>
 
 <script setup>
@@ -16,6 +25,7 @@ const props = defineProps({
     }
 });
 const api = useApi();
+const states = ref([]);
 const yearMonth = ref(props.yearMonth);
 const coefficient = ref(props.coefficient);
 
@@ -33,6 +43,12 @@ function reset(){
 }
 function load(){
     api.post('register/edit',{coefficient:coefficient.value, yearMonth:yearMonth.value});
+    api.get('state')
+        .then(response=>{
+            states.value=response.data;
+            console.log(states);
+        })
+    ;
 }
 onMounted(()=>{
     load();

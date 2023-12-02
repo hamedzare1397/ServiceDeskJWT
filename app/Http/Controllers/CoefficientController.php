@@ -23,8 +23,20 @@ class CoefficientController extends Controller
 
     public function indexAll(Request $request)
     {
-        $class = 'App\\Models\\'.Str::ucfirst($this->typeClass);
-        return $class::all();
+        $result = collect();
+        $coefficients=Coefficient::query()
+            ->groupBy('name')
+            ->get('name');
+
+        foreach ($coefficients as $item){
+            $result->put($item->name, [
+                'news' => Coefficient::query()
+                    ->where('name', $item->name)
+                    ->with('news:id,name,title')
+                    ->get(['title','name','id']),
+            ]);
+        }
+        return $result;
     }
 
     public function store(Request $request)

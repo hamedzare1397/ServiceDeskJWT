@@ -14,7 +14,7 @@ export default [
                         component: () => import('@/view/v1/setting/user/index.vue')
                     },
                     {
-                        path:'oastn',
+                        path:'ostan',
                         name:'App.Setting.Ostan',
                         component: () => import('@/view/v1/setting/ostan/index.vue')
                     },

@@ -4,7 +4,7 @@ import {useApi} from '@/compositions/CallApi.vue';
 import ListState from "./components/listState.vue";
 
 const api = useApi();
-const items = ref([]);
+const coefficientItems = ref([]);
 const coefficient = ref(null);
 const year_month = ref(null);
 const loadingCoefficient = ref(false);
@@ -12,7 +12,7 @@ onMounted(()=>{
     loadingCoefficient.value = true;
     api.get('coefficient')
     .then(response=>{
-        items.value = response.data;
+        coefficientItems.value = response.data;
     })
     .finally(()=>{
         loadingCoefficient.value = false;
@@ -29,9 +29,10 @@ onMounted(()=>{
             <v-col cols="12" sm="6" md="4">
                 <v-select
                     density="compact"
-                    :items="items"
+                    :items="Object.entries(coefficientItems)"
                     label="تیپ امتیازات"
-                    item-value="id"
+                    item-title="0"
+                    return-object
                     v-model="coefficient"
                 ></v-select>
             </v-col>
