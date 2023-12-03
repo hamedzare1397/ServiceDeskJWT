@@ -1,24 +1,13 @@
 <template>
-    <v-row v-for="(state,index) in states" :class="[index%2==0?'bg-blue-lighten-5':'bg-blue-lighten-4']">
-        <v-col cols="12">
-            <v-label>استان {{state.title}}</v-label>
-        </v-col>
-        <v-col cols="12" sm="6" md="4" lg="3" v-for="item in coefficient.data" >
-            <v-text-field :label="item.news.name" v-model="data[`${state.id}_${item.id}_${item.news_id}`]"></v-text-field>
-        </v-col>
-        <v-col cols="12">
-            <v-label>جمع امتیازات</v-label>
-            {{ sumStateVal(state.id) }}
-        </v-col>
-        <v-col cols="12"><pre>
-            {{data[state.id]}}
-        </pre></v-col>
-    </v-row>
+    <template v-for="(state,index) in states">
+        <item-state :year-month="yearMonth" :coefficients="coefficient.data" :state="state"></item-state>
+    </template>
 </template>
 
 <script setup>
 import {useApi} from '@/compositions/CallApi.vue';
 import {ref, onMounted, defineProps, defineEmits, watch} from "vue";
+import ItemState from "./itemState.vue";
 
 const props = defineProps({
     yearMonth: {
@@ -80,6 +69,11 @@ function sumStateVal(id){
         sum += Number.parseInt(val) * Number.parseInt(c[1].coefficient);
     })
     return sum;
+}
+function save(){}
+
+function isRegistered({id}){
+    return id != null && id != undefined;
 }
 onMounted(()=>{
     load();

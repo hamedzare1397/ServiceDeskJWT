@@ -3,5 +3,8 @@ body{
     font-family: "B Koodak";
 }
 @import '@mdi/font/css/materialdesignicons.min.css';
-
+@font-face {
+    font-family: 'Digital-7';
+    src:url("fonts/Digital-7.ttf");
+}
 @import 'animate.css';
