@@ -52,6 +52,7 @@ Route::prefix('/coefficient')
         Route::post('', 'index')->name('.index');
         Route::get('', 'indexAll')->name('.indexAll');
         Route::post('update', 'update')->name('.update');
+        Route::get('edit/{coefficient}', 'edit')->name('.edit');
         Route::post('store', 'store')->name('.store');
         Route::post('delete', 'delete')->name('.delete');
     })

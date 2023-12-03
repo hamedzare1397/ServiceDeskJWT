@@ -1,25 +1,26 @@
 <template>
 <v-card>
     <v-row>
-        <v-col cols="12"
-               v-for="field in fields"
-               sm="6" md="4">
-            <template v-if="field.type=='text' || field.type=='number'">
-                <v-text-field
-                    v-model="data[field.name]"
-                    :label="field.title"
-                    :type="field.type"
+        <v-col cols="12" sm="6" md="4">
+            <v-text-field
+                    v-model="data.name"
+                    label="نام"
+                    type="text"
                 ></v-text-field>
-            </template>
-            <template v-else-if="field.type=='select'">
+        </v-col>
+        <v-col cols="12" sm="6" md="4">
                 <v-select
-                    v-model="data[field.name]"
-                    :label="field.title"
-                    :items="field.items"
-                    item-value="id"
+                    v-model="data.typeNews"
+                    label=""
+                    :items="newsItems"
                     density="compact"
+                    multiple
+                    return-object
+                    chips
                 ></v-select>
-            </template>
+        </v-col>
+        <v-col cols="12" sm="6" md="4" lg="3" v-for="item in data.typeNews">
+            <v-text-field v-model="item.coefficient" :label="`ضریب ${item.title}`"></v-text-field>
         </v-col>
         <v-col cols="12">
             <v-btn :loading="saveLoading" prepend-icon="mdi-content-save" @click.stop="save">ذخیره</v-btn>
@@ -45,13 +46,7 @@ const data = reactive({});
 
 const saveLoading=ref(false)
 const newsItems = ref([]);
-const fields=computed(()=>{
-    return [
-        {name: 'name',title: 'نام', type:'text'},
-        {name: 'news_id',title: 'نوع خبر', type:'select', items:newsItems.value},
-        {name: 'coefficient',title: 'مقدار ضریب', type:'number'},
-    ];
-})
+
 
 function save(){
     saveLoading.value = true;

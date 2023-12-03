@@ -7,11 +7,10 @@
             <v-row>
                 <template v-for="(item,index) in coefficients">
                     <v-col cols="12" sm="6" md="4" lg="3">
-
                         <v-text-field
-                            :messages="`ضریب ${item.coefficient}`"
-                            :label="item.news.name"
-                            v-model="val[item.news.id]"
+                            :messages="`ضریب ${item.pivot.coefficient}`"
+                            :label="item.name"
+                            v-model="val[item.id]"
                         ></v-text-field>
                     </v-col>
                 </template>
@@ -78,14 +77,14 @@ watch(()=>props.coefficients,(newVal,oldVal)=>{
 
 onMounted(()=>{
     console.log(coefficients.value);
-    debugger
-    api.get(`register/val/${state.value.id}/${yearMonth.value}/${coefficients.value.id}`)
-        .then(response=>{
-            console.log(response)
-        })
-        .catch(error=>{
-            alert.error.message
-        })
+    // debugger
+    // api.get(`register/val/${state.value.id}/${yearMonth.value}/${coefficients.value.id}`)
+    //     .then(response=>{
+    //         console.log(response)
+    //     })
+    //     .catch(error=>{
+    //         alert.error.message
+    //     })
 })
 
 </script>

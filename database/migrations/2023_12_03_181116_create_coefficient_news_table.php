@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('coefficients', function (Blueprint $table) {
+        Schema::create('coefficient_news', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignIdFor(\App\Models\News::class);
+            $table->foreignIdFor(\App\Models\Coefficient::class);
+            $table->string('coefficient');
+            $table->softDeletes();
             $table->timestamps();
+            $table->unique(['news_id', 'coefficient_id',]);
         });
     }
 
@@ -23,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('coefficients');
+        Schema::dropIfExists('coefficient_news');
     }
 };

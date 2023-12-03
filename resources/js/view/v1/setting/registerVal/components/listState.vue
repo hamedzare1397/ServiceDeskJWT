@@ -1,6 +1,6 @@
 <template>
     <template v-for="(state,index) in states">
-        <item-state :year-month="yearMonth" :coefficients="coefficient.data" :state="state"></item-state>
+        <item-state :year-month="yearMonth" :coefficients="coefficient" :state="state"></item-state>
     </template>
 </template>
 
@@ -59,9 +59,8 @@ function sumStateVal(id){
     }).forEach(row=>{
         let [index,val]=row;
         let [SID, CID, NID] = index.split('_');
-        let c=Object.entries(coefficient.value.data).filter(row=>{
+        let c=Object.entries(coefficient.value).filter(row=>{
             let [index, data] = row;
-            // debugger
             if (data.id==Number.parseInt(CID) && data.news_id==Number.parseInt(NID))
                 return true;
             return false;

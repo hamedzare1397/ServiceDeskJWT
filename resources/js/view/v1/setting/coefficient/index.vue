@@ -21,9 +21,6 @@
             <template #row="{index}">
                 <td>{{ (index+1)+((page-1)*perPage) }}</td>
             </template>
-            <template #news="{item}">
-                <td>{{item.news.name}}</td>
-            </template>
             <template #actions="{item}">
                 <td>
                     <v-btn-group density="compact">
@@ -50,7 +47,7 @@
                 </tr>
                 <tr v-if="item?.edit">
                     <td :colspan="colspan">
-                        <edit-page url-api="coefficient" :item="item" @updated="getData(1)"></edit-page>
+                        <edit-page url-api="coefficient" :coefficient="item" @updated="getData(1)"></edit-page>
                     </td>
                 </tr>
                 </transition-group>
@@ -75,7 +72,6 @@ const header = reactive([
     {title: 'ضریب', key: 'coefficient'},
 ]);
 const action_header = reactive([
-    {title: 'نوع خبر', key: 'news'},
     {title: 'عملیات', key: 'actions'},
 ]);
 const items = ref([]);

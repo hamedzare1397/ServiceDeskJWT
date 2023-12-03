@@ -12,11 +12,14 @@ onMounted(()=>{
     loadingCoefficient.value = true;
     api.get('coefficient')
     .then(response=>{
+        console.log(Object.entries(response.data).map(row => {
+            let [title, news] = row;
+            return {title, data: news}
+        }));
         coefficientItems.value =
             Object.entries(response.data).map(row=>{
-                let [title, {data}] = row;
-                console.log({title, data});
-                return {title, data}
+                let [index, {title,news}] = row;
+                return {title, data:news}
             });
     })
     .finally(()=>{
@@ -58,8 +61,9 @@ onMounted(()=>{
         </v-row>
         <v-row v-if="coefficient!=null && year_month!=null">
             <v-col cols="12">
-                <list-state :coefficient="coefficient" :yearMonth="year_month"></list-state>
+                <list-state :coefficient="coefficient.data" :yearMonth="year_month"></list-state>
             </v-col>
+
         </v-row>
     </v-sheet>
 </v-sheet>
