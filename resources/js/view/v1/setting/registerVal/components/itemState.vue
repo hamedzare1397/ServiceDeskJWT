@@ -20,14 +20,14 @@
                 </v-col>
             </v-row>
             <v-list-item-action>
-                <v-btn prepend-icon="mdi-content-save">ثبت</v-btn>
+                <v-btn prepend-icon="mdi-content-save" @click.stop="save">ثبت</v-btn>
             </v-list-item-action>
         </v-list-item>
     </v-list>
 </template>
 
 <script setup>
-import {defineProps, onMounted, reactive, ref, watch} from "vue";
+import {computed, defineProps, onMounted, reactive, ref, watch} from "vue";
 import {useApi} from '@/compositions/CallApi.vue';
 
 const api=useApi();
@@ -44,6 +44,10 @@ const props=defineProps({
     state:{
         type:Object,
         default:{id:0,title:'انتخاب نشده است'}
+    },
+    val:{
+        type:Object,
+        default:{},
     }
 });
 
@@ -51,19 +55,22 @@ const state = ref(props.state);
 const yearMonth = ref(props.yearMonth);
 const coefficients = ref(props.coefficients);
 
-const val = reactive({});
+const val = reactive(props.val);
 function sum (){
     let s = 0;
-    Object.entries(val).forEach(row=>{
-        let [i,v]=row;
-        let c=Object.entries(coefficients.value).filter(r=>{
-            let [index, data] = r;
-            if (data.news_id==Number.parseInt(i))
-                return true;
-            return false;
-        })[0];
-        s += Number.parseInt(v) * Number.parseInt(c[1].coefficient);
-    })
+    if (Object.entries(val).length>0) {
+        Object.entries(val).forEach(row => {
+            let [i, v] = row;
+            let c = Object.entries(coefficients.value)
+                .filter(r => {
+                    let [index, data] = r;
+                    if (data.id == Number.parseInt(i))
+                        return true;
+                    return false;
+                })[0];
+            s += Number.parseInt(v) * Number.parseInt(c[1].pivot.coefficient);
+        })
+    }
     return s;
 };
 
@@ -75,17 +82,19 @@ watch(()=>props.coefficients,(newVal,oldVal)=>{
     coefficient.value=newVal
 })
 
-onMounted(()=>{
-    console.log(coefficients.value);
-    // debugger
-    // api.get(`register/val/${state.value.id}/${yearMonth.value}/${coefficients.value.id}`)
-    //     .then(response=>{
-    //         console.log(response)
-    //     })
-    //     .catch(error=>{
-    //         alert.error.message
-    //     })
+
+const sendData=computed(()=>{
+    console.log({state})
+    // return {state: state.value.id,yearMonth:yearMonth.value, coefficient: coefficients.value, val}
 })
+
+function save(){
+    api.post("register/store", {state: state.value.id,yearMonth:yearMonth.value, coefficient: coefficients.value, val})
+        .then(response=>{
+            console.log(response.data);
+        })
+    ;
+}
 
 </script>
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Register;
+use App\Models\State;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -28,29 +29,62 @@ class RegisterController extends Controller
         $coefficeint=$request->input('coefficeint');
         $yaerMonth=$request->input('yearMonth');
         $class = 'App\\Models\\'.Str::ucfirst($this->typeClass);
-        $query = Register::query()
-            ->rightJoin('states','states.id','=','registers.state_id')
-            ->where('year_month','=',$yaerMonth);
-        $query->with([
-            'state',
-            'coefficient'=>function($query) use ($coefficeint){
-                $query->where('id','=',$coefficeint);
-            },
-            'news'
-        ]);
+        $query = State::query()
+//            ->rightJoin('states','states.id','=','registers.state_id')
+//            ->where('year_month','=',$yaerMonth);
+//        $query->with([
+//            'state',
+//            'coefficient'=>function($query) use ($coefficeint){
+//                $query->where('id','=',$coefficeint);
+//            },
+//            'news'
+//        ]);
+;
+        $res=$query->get(['id','name']);
 
-
+        $a=$res->mapToGroups(function ($row) use($request){
+            /** @var State $row */
+            return[
+                $row->name=>
+                    $row
+                        ->registers()
+                        ->where('year_month', $request->yearMonth)
+                        ->get()
+                ]
+                ;
+        });
 //        $query->get();
-        return $query->get();
+        return $a;
     }
 
     public function store(Request $request)
     {
         $class = 'App\\Models\\'.Str::ucfirst($this->typeClass);
-        $class::unguard();
-        $stored=$class::create($request->all());
-        $class::reguard();
-        return $stored;
+        $coefficients = $request->coefficient;
+        $val=$request->val;
+        $result = collect();
+        foreach ($coefficients as $item){
+            $register=Register::query()->where('news_id', $item['pivot']['news_id'])
+                ->where('coefficient_id', $item['pivot']['coefficient_id'])
+                ->where('state_id', $request->state)
+                ->where('year_month', $request->yearMonth)
+                ->first()
+            ;
+            if (is_null($register))
+            {
+                $register = new Register();
+            }
+            $register->coefficient_id = $item['pivot']['coefficient_id'];
+            $register->news_id = $item['pivot']['news_id'];
+
+            $register->value = $val[$item['pivot']['news_id']];
+            $register->state_id=$request->state;
+            $register->year_month=$request->yearMonth;
+            $register->creator_id=$request->user()->id;
+            $register->save();
+            $result->put($register->news_id, $register);
+        }
+        return $result;
     }
 
     public function update(Request $request)

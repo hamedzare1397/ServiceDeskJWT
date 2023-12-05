@@ -61,7 +61,7 @@ onMounted(()=>{
         </v-row>
         <v-row v-if="coefficient!=null && year_month!=null">
             <v-col cols="12">
-                <list-state :coefficient="coefficient.data" :yearMonth="year_month"></list-state>
+                <list-state :coefficient_id="coefficient.data[0].pivot.coefficient_id" :coefficient="coefficient.data" :yearMonth="year_month"></list-state>
             </v-col>
 
         </v-row>

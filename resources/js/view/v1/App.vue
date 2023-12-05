@@ -36,7 +36,7 @@
 
 <script setup>
 
-import {computed, inject, onMounted, onUpdated, ref, watch} from "vue";
+import {computed, inject, onMounted, onUpdated, ref, watch, onUnmounted} from "vue";
 import RightNav from './navs/RightNavs.vue';
 import {storeToRefs} from 'pinia';
 import {useAuthStore} from "@/store/user.js";
@@ -94,6 +94,10 @@ function startTime(){
     timeStampFull.value += 1000;
 }
 
+onUnmounted(()=>{
+    if (intervalVal)
+        clearInterval(intervalVal);
+})
 watch(timeStampFull,(newVal)=>{
     const tim=moment(newVal);
     h.value=tim.format('hh:mm:ss')
