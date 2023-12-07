@@ -10,7 +10,7 @@
                         <v-text-field
                             :messages="`ضریب ${item.pivot.coefficient}`"
                             :label="item.name"
-                            v-model="val[item.id]"
+                            v-model="val[item.pivot.news_id].value"
                         ></v-text-field>
                     </v-col>
                 </template>
@@ -19,6 +19,7 @@
                     <v-label>{{ sum() }}</v-label>
                 </v-col>
             </v-row>
+            <v-row><v-col cols="12"><pre>{{ state }}</pre></v-col></v-row>
             <v-list-item-action>
                 <v-btn prepend-icon="mdi-content-save" @click.stop="save">ثبت</v-btn>
             </v-list-item-action>
@@ -27,7 +28,7 @@
 </template>
 
 <script setup>
-import {computed, defineProps, onMounted, reactive, ref, watch} from "vue";
+import {computed, defineProps ,onMounted, reactive, ref, watch} from "vue";
 import {useApi} from '@/compositions/CallApi.vue';
 
 const api=useApi();
@@ -44,10 +45,6 @@ const props=defineProps({
     state:{
         type:Object,
         default:{id:0,title:'انتخاب نشده است'}
-    },
-    val:{
-        type:Object,
-        default:{},
     }
 });
 
@@ -55,12 +52,21 @@ const state = ref(props.state);
 const yearMonth = ref(props.yearMonth);
 const coefficients = ref(props.coefficients);
 
-const val = reactive(props.val);
+const val = computed({
+    set(value){
+        let [val,key]=value
+        state.value.registers[key] = val;
+    },
+    get(target,name){
+        console.log(target,name);
+        return state.value.registers
+    }
+});
 function sum (){
-    let s = 0;
+    /*let s = 0;
     if (Object.entries(val).length>0) {
         Object.entries(val).forEach(row => {
-            let [i, v] = row;
+            let [i, [v:value]] = row;
             let c = Object.entries(coefficients.value)
                 .filter(r => {
                     let [index, data] = r;
@@ -71,7 +77,7 @@ function sum (){
             s += Number.parseInt(v) * Number.parseInt(c[1].pivot.coefficient);
         })
     }
-    return s;
+    return s;*/
 };
 
 watch(()=>props.yearMonth,(newVal,oldVal)=>{
@@ -84,12 +90,16 @@ watch(()=>props.coefficients,(newVal,oldVal)=>{
 
 
 const sendData=computed(()=>{
-    console.log({state})
     // return {state: state.value.id,yearMonth:yearMonth.value, coefficient: coefficients.value, val}
 })
 
 function save(){
-    api.post("register/store", {state: state.value.id,yearMonth:yearMonth.value, coefficient: coefficients.value, val})
+    api.post("register/store", {
+        state: state.value.id,
+        yearMonth:yearMonth.value,
+        coefficient: coefficients.value,
+        val
+    })
         .then(response=>{
             console.log(response.data);
         })

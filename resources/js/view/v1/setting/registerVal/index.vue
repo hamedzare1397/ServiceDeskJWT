@@ -18,8 +18,8 @@ onMounted(()=>{
         }));
         coefficientItems.value =
             Object.entries(response.data).map(row=>{
-                let [index, {title,news}] = row;
-                return {title, data:news}
+                let [index, {title,news,id}] = row;
+                return {title, data:news,coefficient_id:id}
             });
     })
     .finally(()=>{
@@ -47,6 +47,7 @@ onMounted(()=>{
                     </template>
                 </v-select>
             </v-col>
+
             <v-col cols="12" sm="6" md="4">
                 <PDatePicker
                     label="دوره"
@@ -60,10 +61,10 @@ onMounted(()=>{
             </v-col>
         </v-row>
         <v-row v-if="coefficient!=null && year_month!=null">
+            <v-col>{{coefficient.coefficient_id}}</v-col>
             <v-col cols="12">
-                <list-state :coefficient_id="coefficient.data[0].pivot.coefficient_id" :coefficient="coefficient.data" :yearMonth="year_month"></list-state>
+                <list-state :coefficient_id="coefficient.coefficient_id" :coefficient="coefficient.data" :yearMonth="year_month"></list-state>
             </v-col>
-
         </v-row>
     </v-sheet>
 </v-sheet>

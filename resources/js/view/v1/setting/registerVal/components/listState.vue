@@ -1,5 +1,6 @@
 <template>
     <template v-for="(state,index) in states">
+        <v-list-item-title><pre>s{{coefficient_id}}s</pre></v-list-item-title>
         <item-state
             :year-month="yearMonth"
             :coefficients="coefficient"
@@ -22,7 +23,7 @@ const props = defineProps({
     },
     coefficient_id:{
         type:Number,
-        default:0
+        default:0,
     }
 });
 const api = useApi();
@@ -49,40 +50,14 @@ function reset(){
     data.value={}
 }
 function load(){
-    api.post('register/edit',{coefficient:coefficient_id.value, yearMonth:yearMonth.value});
-    api.get('state')
+    api.post('register/edit',{coefficient:coefficient_id.value, yearMonth:yearMonth.value})
         .then(response=>{
             states.value=response.data;
-            console.log(states);
         })
     ;
 }
 
-function sumStateVal(id){
 
-    let sum = 0;
-    Object.entries(data.value).filter(row=>{
-        let [index,val]=row;
-        if (Number.parseInt(index.split('_'))==id)
-            return val;
-    }).forEach(row=>{
-        let [index,val]=row;
-        let [SID, CID, NID] = index.split('_');
-        let c=Object.entries(coefficient.value).filter(row=>{
-            let [index, data] = row;
-            if (data.id==Number.parseInt(CID) && data.news_id==Number.parseInt(NID))
-                return true;
-            return false;
-        })[0];
-        sum += Number.parseInt(val) * Number.parseInt(c[1].coefficient);
-    })
-    return sum;
-}
-function save(){}
-
-function isRegistered({id}){
-    return id != null && id != undefined;
-}
 onMounted(()=>{
     load();
 })

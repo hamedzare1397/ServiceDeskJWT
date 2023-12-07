@@ -40,21 +40,26 @@ class RegisterController extends Controller
 //            'news'
 //        ]);
 ;
-        $res=$query->get(['id','name']);
-
-        $a=$res->mapToGroups(function ($row) use($request){
-            /** @var State $row */
-            return[
-                $row->name=>
-                    $row
-                        ->registers()
+        $res=$query->get(['id','name','title','user_id']);
+        $result = collect();
+        foreach ($res as $state){
+            $result->put(
+                $state->name,
+                [
+                    ...$state->toArray(),
+                    'registers'=>$state->registers()
                         ->where('year_month', $request->yearMonth)
-                        ->get()
+                        ->where('coefficient_id', $request->coefficient)
+                        ->get(['state_id','news_id','coefficient_id','id','value','year_month',])
+                        ->keyBy('news_id')
+                        ->toArray()
                 ]
-                ;
-        });
+
+            );
+        }
+
 //        $query->get();
-        return $a;
+        return $result;
     }
 
     public function store(Request $request)
