@@ -5,12 +5,13 @@
         </v-list-item-title>
         <v-list-item class="border-b-md rounded-b-lg">
             <v-row>
+                <v-col>{{val}}</v-col>
                 <template v-for="(item,index) in coefficients">
                     <v-col cols="12" sm="6" md="4" lg="3">
                         <v-text-field
                             :messages="`ضریب ${item.pivot.coefficient}`"
                             :label="item.name"
-                            v-model="val[item.pivot.news_id].value"
+                            v-model="val[item.pivot.news_id]"
                         ></v-text-field>
                     </v-col>
                 </template>
@@ -33,6 +34,7 @@ import {useApi} from '@/compositions/CallApi.vue';
 
 const api=useApi();
 
+
 const props=defineProps({
     yearMonth:{
         type:String,
@@ -52,16 +54,8 @@ const state = ref(props.state);
 const yearMonth = ref(props.yearMonth);
 const coefficients = ref(props.coefficients);
 
-const val = computed({
-    set(value){
-        let [val,key]=value
-        state.value.registers[key] = val;
-    },
-    get(target,name){
-        console.log(target,name);
-        return state.value.registers
-    }
-});
+const val =reactive({});
+
 function sum (){
     /*let s = 0;
     if (Object.entries(val).length>0) {
@@ -105,7 +99,19 @@ function save(){
         })
     ;
 }
+onMounted(()=>{
+    let registers = Object.entries(state.value.registers);
+    // console.log(registers)
+    if (registers.length > 0) {
+        registers.forEach(row=>{
+            let [index,val]=row;
+            val[index]=val.value;
+        })
+    }
+    else{
 
+    }
+})
 </script>
 
 <style scoped>
