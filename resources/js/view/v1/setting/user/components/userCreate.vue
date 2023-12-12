@@ -1,11 +1,8 @@
 <template>
     <v-card>
-
+        <pre>{{state}}</pre>
         <v-card-text>
-            <v-row class="bg-amber rounded-shaped">
-                <v-col cols="12">
-                    <v-card-title class="rounded-pill text-center">{{data.firstname}} {{data.lastname}}</v-card-title>
-                </v-col>
+            <v-row class="bg-green-accent-1 rounded-shaped">
                 <v-col cols="12" sm="6">
                     <v-list class="rounded-shaped  v-card">
                         <v-list-item>
@@ -57,7 +54,7 @@
                 <v-col cols="12">
 
                     <v-card-actions class="v-toolbar">
-                        <v-btn :loading="saveLoading" @click="update" prepend-icon="mdi-content-save">ویرایش</v-btn>
+                        <v-btn :loading="saveLoading" @click="save" prepend-icon="mdi-content-save">ثبت</v-btn>
                     </v-card-actions>
                 </v-col>
             </v-row>
@@ -66,16 +63,11 @@
 </template>
 
 <script setup>
-import {computed, defineProps, onBeforeMount, onBeforeUnmount, onMounted, ref} from "vue";
+import {computed, defineProps, onBeforeUnmount, onMounted, ref} from "vue";
 import {useApi} from '@/compositions/CallApi.vue';
 
 const api = useApi();
 const props=defineProps({
-    item:{
-        type:Object,
-        default:{},
-        required:true,
-    },
     col:{
         type:Number,
         default: 1,
@@ -87,21 +79,19 @@ const props=defineProps({
 })
 const states = ref([]);
 const saveLoading = ref(false);
-const item = ref(props.item);
 const col = ref(props.col);
-const data = ref(JSON.parse(JSON.stringify(props.item)));
-function update(){
-    api.post('user/update', data.value)
+const data = ref({
+    admin:false,
+});
+function save(){
+    api.post('user/store', data.value)
     .then(response=>{
-        item.edit = false;
+
     })
     .finally(()=>{
         saveLoading.value = false;
     })
 }
-onMounted(()=>{
-    data.value.state = props.item.state?.id;
-})
 onBeforeUnmount(()=>{
     data.value = {};
 })

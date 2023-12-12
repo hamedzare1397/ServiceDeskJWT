@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\State;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -18,8 +19,12 @@ class StateController extends Controller
     }
     public function indexAll(Request $request)
     {
-        $class = 'App\\Models\\'.Str::ucfirst($this->typeClass);
-        return $class::all();
+//        $class = 'App\\Models\\'.Str::ucfirst($this->typeClass);
+        $query = State::query();
+        if ($request->filled('with')) {
+            return $query->with($request->with)->get();
+        }
+        return $query->get();
     }
 
     public function store(Request $request)

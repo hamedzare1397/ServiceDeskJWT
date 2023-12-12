@@ -1,12 +1,32 @@
 <template>
-    <template v-for="(state,index) in states">
-        <v-list-item-title><pre>s{{coefficient_id}}s</pre></v-list-item-title>
-        <item-state
-            :year-month="yearMonth"
-            :coefficients="coefficient"
-            :state="state"
-        ></item-state>
-    </template>
+        <v-alert color="warning" v-if="existsAnOther">
+            <p>            برای این دوره تیپ دیگری در سیستم ثبت شده است در صورت تمایل به حذف اطلاعات پیشین را بزنید.</p>
+            <v-btn color="error" @click.stop="showDeleteMessage=!showDeleteMessage" >حذف</v-btn>
+        </v-alert>
+        <template v-for="(state,index) in states">
+            <v-list-item-title>
+            </v-list-item-title>
+            <item-state
+                :year-month="yearMonth"
+                :coefficients="coefficient"
+                :state="state"
+            ></item-state>
+        </template>
+    <v-dialog v-model="showDeleteMessage"
+              width="auto">
+        <v-card>
+            <v-card-title class="bg-error">
+                <v-icon>mdi-trash-can-outline</v-icon>
+                <span>حذف کلیه داده های تیپ و دوره انتخاب شده</span>
+            </v-card-title>
+            <v-card-text><p>آیا برای حذف اطمینان دارید؟</p></v-card-text>
+            <v-card-actions>
+                <v-btn variant="elevated" color="error" @click.stop="deleteAnOtherData">حذف</v-btn>
+                <v-btn variant="elevated" color="success" @click="showDeleteMessage=!showDeleteMessage">انصراف</v-btn>
+            </v-card-actions>
+        </v-card>
+
+    </v-dialog>
 </template>
 
 <script setup>
@@ -31,15 +51,15 @@ const states = ref([]);
 const yearMonth = ref(props.yearMonth);
 const coefficient = ref(props.coefficient);
 const coefficient_id = ref(props.coefficient_id);
-const data=ref({})
+const existsAnOther = ref(false);
+const data = ref({});
+const showDeleteMessage = ref(false);
 watch(()=>props.yearMonth,(newVal,oldVal)=>{
-    yearMonth.value = newVal;
     reset()
     load()
 
 })
 watch(()=>props.coefficient,(newVal,oldVal)=>{
-    coefficient.value=newVal
     reset()
     load()
 })
@@ -47,13 +67,22 @@ function reset(){
     states.value = [];
     yearMonth.value = props.yearMonth;
     coefficient.value = props.coefficient;
+    coefficient_id.value = props.coefficient_id;
     data.value={}
 }
 function load(){
     api.post('register/edit',{coefficient:coefficient_id.value, yearMonth:yearMonth.value})
         .then(response=>{
-            states.value=response.data;
+            states.value=response.data.state;
+            existsAnOther.value=response.data.existsAnOther;
         })
+    ;
+}
+
+function deleteAnOtherData(){
+
+    api.post('register/delete',{coefficient:coefficient_id.value, yearMonth:yearMonth.value})
+        .then(response=>{})
     ;
 }
 

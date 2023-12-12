@@ -21,6 +21,7 @@ Route::prefix('/user')
     ->group(function(){
         Route::post('', 'index')->name('.index');
         Route::post('update', 'update')->name('.update');
+        Route::post('store', 'store')->name('.store');
     })
     ->name('user')
 ;
@@ -89,4 +90,13 @@ Route::prefix('/register')
         Route::post('delete', 'delete')->name('.delete');
     })
     ->name('register')
+;
+
+
+Route::prefix('statics')
+    ->controller(\App\Http\Controllers\DashboardController::class)
+    ->group(function () {
+        Route::get('', 'staticsData')->name('.index');
+    })
+    ->name('statics')
 ;

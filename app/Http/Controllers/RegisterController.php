@@ -29,17 +29,7 @@ class RegisterController extends Controller
         $coefficeint=$request->input('coefficeint');
         $yaerMonth=$request->input('yearMonth');
         $class = 'App\\Models\\'.Str::ucfirst($this->typeClass);
-        $query = State::query()
-//            ->rightJoin('states','states.id','=','registers.state_id')
-//            ->where('year_month','=',$yaerMonth);
-//        $query->with([
-//            'state',
-//            'coefficient'=>function($query) use ($coefficeint){
-//                $query->where('id','=',$coefficeint);
-//            },
-//            'news'
-//        ]);
-;
+        $query = State::query();
         $res=$query->get(['id','name','title','user_id']);
         $result = collect();
         foreach ($res as $state){
@@ -57,9 +47,11 @@ class RegisterController extends Controller
 
             );
         }
+        $existsAnOther=Register::query()->whereNot('coefficient_id',$request->coefficient)
+            ->where('year_month',$request->yearMonth)
+            ->exists();
 
-//        $query->get();
-        return $result;
+        return ['state'=>$result,'existsAnOther'=>$existsAnOther];
     }
 
     public function store(Request $request)

@@ -5,7 +5,6 @@
         </v-list-item-title>
         <v-list-item class="border-b-md rounded-b-lg">
             <v-row>
-                <v-col>{{val}}</v-col>
                 <template v-for="(item,index) in coefficients">
                     <v-col cols="12" sm="6" md="4" lg="3">
                         <v-text-field
@@ -20,9 +19,11 @@
                     <v-label>{{ sum() }}</v-label>
                 </v-col>
             </v-row>
-            <v-row><v-col cols="12"><pre>{{ state }}</pre></v-col></v-row>
             <v-list-item-action>
-                <v-btn prepend-icon="mdi-content-save" @click.stop="save">ثبت</v-btn>
+                <v-btn prepend-icon="mdi-content-save" @click.stop="save">
+                    <span v-if="state.registers.length<=0">ثبت</span>
+                    <span v-else>ویرایش</span>
+                </v-btn>
             </v-list-item-action>
         </v-list-item>
     </v-list>
@@ -57,10 +58,10 @@ const coefficients = ref(props.coefficients);
 const val =reactive({});
 
 function sum (){
-    /*let s = 0;
+    let s = 0;
     if (Object.entries(val).length>0) {
         Object.entries(val).forEach(row => {
-            let [i, [v:value]] = row;
+            let [i, v] = row;
             let c = Object.entries(coefficients.value)
                 .filter(r => {
                     let [index, data] = r;
@@ -71,7 +72,7 @@ function sum (){
             s += Number.parseInt(v) * Number.parseInt(c[1].pivot.coefficient);
         })
     }
-    return s;*/
+    return s;
 };
 
 watch(()=>props.yearMonth,(newVal,oldVal)=>{
@@ -95,7 +96,7 @@ function save(){
         val
     })
         .then(response=>{
-            console.log(response.data);
+            state.value.registers=response.data;
         })
     ;
 }
@@ -104,8 +105,8 @@ onMounted(()=>{
     // console.log(registers)
     if (registers.length > 0) {
         registers.forEach(row=>{
-            let [index,val]=row;
-            val[index]=val.value;
+            let [index,value]=row;
+            val[index]=value.value;
         })
     }
     else{

@@ -6,13 +6,18 @@
                     <v-btn @click="showRightNav=!showRightNav" icon="mdi-menu"></v-btn>
                 </template>
                 <template v-slot:append>
-                    <v-row class="text-left">
-                        <v-col class="ma-n2" cols="12" >
-                            <span class="digitalFont"> {{ h }} </span>
-                            <span>&nbsp;{{ A }} </span>
-                        </v-col>
-                        <v-col class="ma-n2" cols="12">{{ d }}</v-col>
-                    </v-row>
+                    <transition
+                        mode="in-out"
+                        enter-active-class="animate__animated animate__bounceIn"
+                        leave-active-class="animate__animated animate__bounceOut">
+                        <v-row class="text-left" v-if="timeStampFull!=null && timeStampFull>=0">
+                            <v-col class="ma-n2" cols="12">
+                                <span class="digitalFont"> {{ h }} </span>
+                                <span>&nbsp;{{ A }} </span>
+                            </v-col>
+                            <v-col class="ma-n2" cols="12">{{ d }}</v-col>
+                        </v-row>
+                    </transition>
                         <v-btn icon="mdi-account" size="small" rounded="circle" class="bg-amber"></v-btn>
                         <v-btn
                             icon="mdi-exit-to-app"
@@ -36,7 +41,7 @@
 
 <script setup>
 
-import {computed, inject, onMounted, onUpdated, ref, watch, onUnmounted} from "vue";
+import {computed, inject, onMounted, onUpdated, ref, watch, onUnmounted, onBeforeMount} from "vue";
 import RightNav from './navs/RightNavs.vue';
 import {storeToRefs} from 'pinia';
 import {useAuthStore} from "@/store/user.js";
@@ -68,25 +73,17 @@ const timeStampFull = ref(null);
 const h = ref(0);
 const A= ref('');
 const d = ref(0);
-onUpdated(()=>{
-    api.get('time')
-        .then(response=>{
-            if (response.status == 200) {
-                timeStampFull.value = Number(response.data)* 1000;
-                setInterval(startTime, 1000);
-            }
-        });
-})
-let intervalVal;
-onMounted(()=>{
-    api.get('time')
-        .then(response=>{
-            if (response.status == 200) {
-                timeStampFull.value = Number(response.data)* 1000;
-                if (intervalVal)
-                    clearInterval(intervalVal);
 
-                intervalVal=setInterval(startTime, 1000);
+let intervalVal;
+onBeforeMount(()=>{
+    if (intervalVal) {
+        clearInterval(intervalVal);
+    }
+    api.get('time')
+        .then(response => {
+            if (response.status == 200) {
+                timeStampFull.value = Number(response.data) * 1000;
+                intervalVal = setInterval(startTime, 1000);
             }
         });
 })

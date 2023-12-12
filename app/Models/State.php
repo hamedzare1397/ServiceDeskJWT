@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\ViewModels\ValueModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,5 +16,10 @@ class State extends Model
     public function registers():HasMany
     {
         return $this->hasMany(Register::class);
+    }
+
+    public function registerVal():HasMany
+    {
+        return $this->hasMany(ValueModel::class);
     }
 }

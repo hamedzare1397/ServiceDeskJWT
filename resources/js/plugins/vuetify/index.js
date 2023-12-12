@@ -8,6 +8,9 @@ export default createVuetify({
     blueprint: md3,
     // ssr: true,
     defaults: {
+        VSelect:{
+            noDataText:'بدون مقدار اولیه'
+        },
         VRadio:{
             trueIcon:"mdi-checkbox-marked-circle-outline",
         },
