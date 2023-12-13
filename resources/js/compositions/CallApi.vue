@@ -17,7 +17,11 @@ export function useApi(){
     }
 
     function get(url,config={}){
-        url = 'api/' + url + `?token=${useAuth.getToken()}`;
+        if (url[url.length-1]==='&' || url[url.length-1]==='?')
+            url = 'api/' + url + `token=${useAuth.getToken()}`;
+        else
+            url = 'api/' + url + `?token=${useAuth.getToken()}`;
+
         return axios.get(url, config);
     }
     function setAuthorization(token){

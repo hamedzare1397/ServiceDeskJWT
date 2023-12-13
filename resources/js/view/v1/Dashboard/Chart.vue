@@ -1,10 +1,5 @@
 <template>
-    <div style="width: 400px">
-        <div style="display: flex; justify-content: center">
-            <button type="button" @click="shuffleData">Add data</button>
-        </div>
-        <h1>sl</h1>
-        <pre dir="ltr">{{props.states }}</pre>
+    <div class="chartClass">
         <DoughnutChart v-bind="doughnutChartProps" />
     </div>
 </template>
@@ -65,15 +60,6 @@ const { doughnutChartProps, doughnutChartRef } = useDoughnutChart({
 
 let index = ref(20);
 
-function shuffleData() {
-    // dataValues.value = shuffle(dataValues.value);
-    dataValues.value.push(index.value);
-    dataLabels.value.push("Other" + index.value);
-    console.log(dataValues.value);
-    console.log(doughnutChartRef.value.chartInstance);
-    index.value++;
-}
-
 function switchLegend() {
     toggleLegend.value = !toggleLegend.value;
 }
@@ -81,7 +67,7 @@ function switchLegend() {
 </script>
 
 <style>
-#app {
+.chartClass{
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
