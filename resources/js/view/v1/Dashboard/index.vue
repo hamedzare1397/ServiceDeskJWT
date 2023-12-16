@@ -54,7 +54,7 @@ watch(typeSelected,(n,o)=>{
 
 </script>
 <template>
-<v-sheet>
+<v-sheet class="h-100">
     <v-toolbar density="compact">
         <v-btn icon="mdi-refresh" @click="refreshData" density="compact"></v-btn>
     </v-toolbar>
@@ -91,15 +91,15 @@ watch(typeSelected,(n,o)=>{
             ></v-select>
         </v-col>
     </v-row>
-    <v-row>
+    <v-row class="h-100">
         <v-col cols="12" md="4" class="order-md-1">
             <chart v-if="registersVal" :data="data"></chart>
         </v-col>
         <v-col cols="12" md="4" class="order-md-0">
-            <v-table class="v-responsive__content">
+            <v-table class="h-100">
                 <thead>
                 <tr>
-                    <th>رتبه</th>
+                    <th width="25">رتبه</th>
                     <th>استان</th>
                     <th>امتیاز</th>
                 </tr>
