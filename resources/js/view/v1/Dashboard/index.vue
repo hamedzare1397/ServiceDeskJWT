@@ -10,7 +10,7 @@ const data = reactive({
 });
 
 const type = ref('month');
-const values = ref(null);
+const values = ref(moment(moment.now()).format('jYYYY-jMM'));
 const api = useApi();
 function refreshData(){
     let link=`statics/?type=${typeSelected.value}&year_month=${values.value}&`;
@@ -51,13 +51,12 @@ watch(typeSelected,(n,o)=>{
     values.value = null;
     typeVal.value = null;
 })
+
 </script>
 <template>
 <v-sheet>
-    <v-toolbar>
-        <v-toolbar-items>
-            <v-btn icon="mdi-refresh" @click="refreshData"></v-btn>
-        </v-toolbar-items>
+    <v-toolbar density="compact">
+        <v-btn icon="mdi-refresh" @click="refreshData" density="compact"></v-btn>
     </v-toolbar>
     <v-row>
         <v-col cols="12" md="4">
@@ -94,7 +93,7 @@ watch(typeSelected,(n,o)=>{
     </v-row>
     <v-row>
         <v-col cols="12" md="4" class="order-md-1">
-            <chart v-if="registersVal" :data="data.val" :states="data.label"></chart>
+            <chart v-if="registersVal" :data="data"></chart>
         </v-col>
         <v-col cols="12" md="4" class="order-md-0">
             <v-table class="v-responsive__content">
