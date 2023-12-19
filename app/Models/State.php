@@ -22,4 +22,9 @@ class State extends Model
     {
         return $this->hasMany(ValueModel::class);
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 }

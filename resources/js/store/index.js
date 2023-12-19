@@ -6,12 +6,12 @@ export const useAppStore = defineStore('app', () => {
     const showRailNav = ref(false);
     const showFooter = ref(true);
     const expandNav = ref(true);
-    const showLefttNav = ref(false);
+    const showLeftNav = ref(false);
     return {
         //functions
 
         //variables
         showRightNav,showRailNav,showFooter,expandNav,
-        showLefttNav
+        showLeftNav
     }
 });

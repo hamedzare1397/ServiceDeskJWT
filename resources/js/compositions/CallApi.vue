@@ -7,7 +7,6 @@ export function useApi(){
     const useAuth = useAuthStore();
     function post(url,data={},config={}){
         url = 'api/' + url;
-        // console.log(url);
         return axios.post(url, data, config);
     }
 

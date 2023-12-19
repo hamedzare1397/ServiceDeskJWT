@@ -1,9 +1,9 @@
 <template>
     <v-navigation-drawer
         elevation="3"
-        location="right"
-        v-model="showLefttNav"
-        :rail="showRailNav"
+        location="left"
+        v-model="showLeftNav"
+        :rail="false"
         :expand-on-hover="expandNav"
         permanent
     >
@@ -37,7 +37,7 @@ import {onBeforeMount, ref} from "vue";
 
 const appStore = useAppStore();
 const userStore = useUserStore();
-const {showLefttNav, showRailNav,showFooter,expandNav} = storeToRefs(appStore);
+const {showLeftNav, showRailNav,showFooter,expandNav} = storeToRefs(appStore);
 
 const {} = storeToRefs(userStore);
 onBeforeMount(()=>{

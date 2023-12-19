@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ViewModels\ValueModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use function PHPUnit\Framework\isNull;
 
 class DashboardController extends Controller
 {
@@ -18,40 +19,84 @@ class DashboardController extends Controller
         $month=Str::substr($request->year_month,5,2);
 
         $statics = ValueModel::query()
-            ->with('state')
-            ->groupBy(['state_id', 'coefficient_id', 'year', 'month'])
-            ->selectRaw('sum(mvalue) as mvalue,state_id,month,coefficient_id');
-        $count = $statics->count();
+            ->with('state');
+        $count = $statics->get()->count();
         $statics->where('year', $year);
-        if (!$request->filled('type')) {
-
-        }
-        else {
+        if ($request->filled('type')) {
             switch ($request->type) {
                 case 'month':
-                    $statics->where('month', $month);
+                    $statics->where('month', $month)
+                        ->selectRaw('
+            RANK() OVER (PARTITION BY month,coefficient_id ORDER BY mvalue DESC) AS rank,
+            sum(mvalue) as mvalue,state_id,month,coefficient_id')
+                        ->groupBy(['state_id', 'coefficient_id', 'year', 'month']);
                     break;
                 case '3month':
-                    $statics->whereBetween('month', [$request->month[0], $request->month[1]]);
+                    $typeVal = $request->typeVal;
+                    switch ($typeVal){
+                        case 1:
+                            $statics->whereBetween('month', [1, 3]);
+                            break;
+                        case 2:
+                            $statics->whereBetween('month', [4,6]);
+                            break;
+                        case 3:
+                            $statics->whereBetween('month', [7, 9]);
+                            break;
+                        case 4:
+                            $statics->whereBetween('month', [10, 12]);
+                            break;
+                    }
+                    $statics
+                        ->selectRaw('
+            RANK() OVER (PARTITION BY month,coefficient_id ORDER BY mvalue DESC) AS rank,
+            sum(mvalue) as mvalue,state_id,coefficient_id')
+                        ->groupBy(['state_id', 'coefficient_id', 'year']);
+                    break;
+                case '6month':
+                    $typeVal = $request->typeVal;
+                    switch ($typeVal){
+                        case 1:
+                            $statics->whereBetween('month', [1, 6]);
+                            break;
+                        case 2:
+                            $statics->whereBetween('month', [7,12]);
+                            break;
+                    }
+                    $statics
+                        ->selectRaw('
+            RANK() OVER (PARTITION BY month,coefficient_id ORDER BY mvalue DESC) AS rank,
+            sum(mvalue) as mvalue,state_id,coefficient_id')
+                        ->groupBy(['state_id', 'coefficient_id', 'year']);
+                    break;
+                case 'year':
+                    $typeVal = $request->typeVal;
+                    $statics
+                        ->selectRaw('
+            RANK() OVER (PARTITION BY year,coefficient_id ORDER BY mvalue DESC) AS rank,
+            sum(mvalue) as mvalue,state_id,coefficient_id')
+                        ->groupBy(['state_id', 'coefficient_id', 'year']);
                     break;
             }
         }
-        if ($request->user()->isAdmin) {
-            $statics1 = clone $statics;
-            $statics2 = clone $statics;
-            $statics1->limit(3);
-            $result->push(...$statics1
+
+//        dd($statics->toRawSql());
+        $topStatics = clone $statics;
+        $downStatics = clone $statics;
+        $selfStatics = clone $statics;
+        if (!$request->user()->isAdmin) {
+            $topStatics->limit(3);
+            $result->push(...$topStatics
                 ->orderBy('mvalue', 'desc')
                 ->get());
 
-            if ($count<=3) {
-            }
-            else{
-                $result->push(...$statics2
+            if ($count>=3) {
+                $result->push(...$downStatics
                     ->orderBy('mvalue', 'asc')
                     ->selectRaw('sum(mvalue) as mvalue,state_id,month,coefficient_id')
-                    ->limit($count-3)
-                    ->get()->reverse());
+                    ->limit(3)
+                    ->get()->reverse()
+                );
             }
         }
         else{
@@ -60,6 +105,20 @@ class DashboardController extends Controller
                 ->selectRaw('sum(mvalue) as mvalue,state_id,month,coefficient_id')
                 ->get());
         }
-        return $result;
+
+        if (!is_null(
+            $state=$request->user()->state
+                    )) {
+                        if (!$result->where('state_id',$state->id)->first()) {
+                            $result->push(...$selfStatics
+                                ->orderBy('mvalue', 'asc')
+                                ->selectRaw('sum(mvalue) as mvalue,state_id,month,coefficient_id')
+                                ->get()
+                                ->where('state_id', $state->id)
+                            );
+                        }
+        }
+        return $result->sortBy('rank')->values();
+
     }
 }

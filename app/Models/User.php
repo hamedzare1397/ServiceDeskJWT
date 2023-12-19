@@ -16,7 +16,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function state()
     {
-        return $this->hasOne(State::class);
+        return $this->belongsTo(State::class);
     }
     /**
      * The attributes that are mass assignable.

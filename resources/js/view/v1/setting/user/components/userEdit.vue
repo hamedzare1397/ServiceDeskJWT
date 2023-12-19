@@ -24,8 +24,8 @@
                             <v-text-field label="رمز عبور" v-model="data.password"></v-text-field>
                         </v-list-item>
                         <v-list-item>
-                            <v-select label="استان" v-model="data.state" item-value="id" :items="props.states"></v-select>
-                            {{data.state}}
+                            <v-select label="استان" v-model="data.state_id" item-value="id" :items="props.states"></v-select>
+                            {{data.state_id}}
                         </v-list-item>
                     </v-list>
                 </v-col>

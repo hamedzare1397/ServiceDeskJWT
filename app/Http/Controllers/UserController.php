@@ -81,9 +81,11 @@ class UserController extends Controller
         $user->zipCode=$request->zipCode;
         $user->nativeid=$request->nativeid;
         $user->admin=$request->admin;
-        if ($request->filled('state')) {
-            $state = State::find($request->state)->first();
-            $user->state()->save($state);
+        if ($request->filled('state_id')) {
+            $state = State::find($request->state_id);
+            if (!is_null($state)){
+                $user->state_id = $state->id;
+            }
         }
         if ($request->filled('password')) {
             $user->password = bcrypt($request->password);

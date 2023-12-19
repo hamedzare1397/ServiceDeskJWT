@@ -10,27 +10,43 @@
                         mode="in-out"
                         enter-active-class="animate__animated animate__bounceIn"
                         leave-active-class="animate__animated animate__bounceOut">
-                        <v-row class="text-left" v-if="timeStampFull!=null && timeStampFull>=0">
-                            <v-col class="ma-n2" cols="12">
-                                <span class="digitalFont"> {{ h }} </span>
-                                <span>&nbsp;{{ A }} </span>
-                            </v-col>
-                            <v-col class="ma-n2" cols="12">{{ d }}</v-col>
-                        </v-row>
-                    </transition>
-                        <v-btn icon="mdi-account" size="small" rounded="circle" class="bg-amber"></v-btn>
-                        <v-btn
-                            icon="mdi-exit-to-app"
-                            density="compact"
-                            size="small"
-                            color="error"
-                            elevation="24"
-                            @click="logout"
-                        ></v-btn>
+                        <table
+                            class="d-sm-block d-none"
+                            v-if="timeStampFull!=null && timeStampFull>=0"
+                            style="width: 70px"
+                        >
 
+                        <tbody >
+                            <tr class="" cols="12">
+                                <td class=""> {{ h }} </td>
+                                <td >&nbsp;{{ A }} </td>
+                            </tr>
+                        <tr>
+                            <td colspan="2" class="text-center mb-3" cols="12"><span class=""> {{ d }} </span></td>
+                        </tr>
+                        </tbody>
+                        </table>
+                    </transition>
+                    <div class="mr-5">
+                            <v-btn
+                                icon="mdi-account"
+                                size="small" rounded="circle"
+                                color="blue"
+                                variant="tonal"
+                                @click="showLeftNav=!showLeftNav"
+                            ></v-btn>
+                            <v-btn
+                                icon="mdi-exit-to-app"
+                                size="small"
+                                color="error"
+                                variant="tonal"
+                                @click="logout"
+                            ></v-btn>
+                    </div>
                 </template>
             </v-app-bar>
             <right-nav></right-nav>
+            <left-nav></left-nav>
             <v-sheet class="w-100 h-100">
                 <router-view></router-view>
             </v-sheet>
@@ -43,6 +59,7 @@
 
 import {computed, inject, onMounted, onUpdated, ref, watch, onUnmounted, onBeforeMount} from "vue";
 import RightNav from './navs/RightNavs.vue';
+import LeftNav from './navs/LeftNavs.vue';
 import {storeToRefs} from 'pinia';
 import {useAuthStore} from "@/store/user.js";
 import {useAppStore} from '@/store/index.js';
@@ -53,7 +70,7 @@ const api = useApi();
 
 const appName = inject('config').appName;
 const appStore = useAppStore();
-const {showRightNav, showRailNav,showFooter} = storeToRefs(appStore);
+const {showRightNav, showRailNav,showFooter,showLeftNav} = storeToRefs(appStore);
 function setShowRightNav(val){
     showRightNav.value = val;
 }

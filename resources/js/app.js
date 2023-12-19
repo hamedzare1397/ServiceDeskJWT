@@ -13,7 +13,7 @@ app
     .provide('config',{
         'appName':'سامانه ارزیابی خبر',
         'organ':'اداره زیر ساخت استان فارس',
-        'logo':'/storage/images/favicon.ico',
+        'logo':'/storage/images/download.jfif',
         'addressApi':'http://127.0.0.1:8000/api'
     })
     .mount("#app")

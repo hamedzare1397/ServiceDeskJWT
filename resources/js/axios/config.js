@@ -3,15 +3,11 @@ import {useAppStore} from "../store";
 import router from '../router/index.js';
 
 // axios.defaults.withCredentials = true;
-// console.log(import.meta.env.VITE_API_URL);
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 axios.interceptors.response.use((response)=>{
     return response;
 },async (error) => {
     const appStore = useAppStore();
-    // console.clear();
-    console.log(error);
-    // debugger;
     switch (error?.response?.status)
     {
         case 401:

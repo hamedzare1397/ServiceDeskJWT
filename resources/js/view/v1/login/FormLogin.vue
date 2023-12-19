@@ -59,7 +59,6 @@ async function login(){
             }
         })
         .catch(err=>{
-            console.log(err);
             errorMessage.value = err.response?.data?.username;
         })
         .finally(() => {

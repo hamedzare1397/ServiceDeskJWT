@@ -102,7 +102,6 @@ function save(){
 }
 onMounted(()=>{
     let registers = Object.entries(state.value.registers);
-    // console.log(registers)
     if (registers.length > 0) {
         registers.forEach(row=>{
             let [index,value]=row;
