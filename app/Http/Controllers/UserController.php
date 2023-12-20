@@ -6,6 +6,7 @@ use App\Models\State;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -97,5 +98,17 @@ class UserController extends Controller
         }
         DB::rollBack();
         return false;
+    }
+
+    public function changePassword(Request $request)
+    {
+        $user = $request->user();
+        $request->validate([
+            'current_password'=>'current_password:api',
+            'password' => 'required|min:8|confirmed',
+            'password_confirmation'=>'required'
+        ]);
+        $user->password=bcrypt($request->password);
+        return $user->save();
     }
 }

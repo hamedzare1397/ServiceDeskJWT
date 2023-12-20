@@ -58,17 +58,20 @@ export const useAuthStore = defineStore('user-auth', () => {
     function getToken() {
         return token.value;
     }
-    async function login(person){
-        api.post('login', person)
-            .then(response => {
-                if (response?.status == 200) {
-                    userStore.setInformation(response.data.user);
-                    setToken(response.data.authorisation.token);
-                    localStorage.setItem('token', response.data.authorisation.token);
-                    router.push({name: 'App.Dashboard'});
-                    return true;
-                }
-            });
+    async function login(person) {
+        let response =null;
+        try{
+            response=await api.post('login', person);
+            if (response.status == 200) {
+                userStore.setInformation(response.data.user);
+                setToken(response.data.authorisation.token);
+                localStorage.setItem('token', response.data.authorisation.token);
+                return response;
+            }
+        }
+        catch(errors){
+            return Promise.reject(errors)
+        }
     }
     async function logout(){
         let response=await api.post('logout');

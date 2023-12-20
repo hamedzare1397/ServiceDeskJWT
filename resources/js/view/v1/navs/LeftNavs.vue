@@ -7,43 +7,30 @@
         :expand-on-hover="expandNav"
         permanent
     >
-        <profile></profile>
-        <v-divider></v-divider>
-        <action-nav></action-nav>
-        <div style="bottom: 0px; z-index: 1004; transform: translateY(0%); position: fixed; left: 0px; width: calc((100% - 0px) - 0px);">
-        <v-divider></v-divider>
-            <v-list>
-                <v-list-item>
-                    <template v-slot:append>
-                        <v-btn-close
-                            density="compact"
-                            :icon="showRailNav?'mdi-pin-off':'mdi-pin'"
-                            size="small"
-                            @click="userStore.getNavigations()"></v-btn-close>
-                    </template>
-                </v-list-item>
-            </v-list>
-        </div>
+        <v-list>
+            <v-list-item prepend-icon="mdi-account-reactivate"
+            @click="goToPage('App.ChangePassword')">
+                تغییر رمز عبور
+            </v-list-item>
+        </v-list>
     </v-navigation-drawer>
 </template>
 
 <script setup>
-import Profile from './ProfileNav.vue';
-import ActionNav from './ActionNav.vue';
 import {useAppStore} from "@/store";
 import {storeToRefs} from "pinia";
 import {useUserStore} from "@/store/user.js";
 import {onBeforeMount, ref} from "vue";
+import {useRouter} from 'vue-router';
 
+const router = useRouter();
 const appStore = useAppStore();
-const userStore = useUserStore();
-const {showLeftNav, showRailNav,showFooter,expandNav} = storeToRefs(appStore);
+const {showLeftNav, expandNav} = storeToRefs(appStore);
 
-const {} = storeToRefs(userStore);
-onBeforeMount(()=>{
-    userStore.getNavigations();
-})
-
+function goToPage(name){
+    router.push({name})
+    showLeftNav.value = false;
+}
 
 </script>
 

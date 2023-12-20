@@ -30,7 +30,7 @@ class RegisterController extends Controller
         $yaerMonth=$request->input('yearMonth');
         $class = 'App\\Models\\'.Str::ucfirst($this->typeClass);
         $query = State::query();
-        $res=$query->get(['id','name','title','user_id']);
+        $res=$query->get(['id','name','title',]);
         $result = collect();
         foreach ($res as $state){
             $result->put(

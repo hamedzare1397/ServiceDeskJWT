@@ -44,7 +44,6 @@ function pickRandomProperty(obj) {
     for (var prop in obj){
         let rnd = Math.random()
         let test = 1 / ++count;
-        console.log(rnd,test)
         if (rnd<test) {
             let exists = data.colors.filter(row => {
                 return prop == row
@@ -54,7 +53,6 @@ function pickRandomProperty(obj) {
             }
         }
     }
-    console.log(result);
     return result;
 }
 

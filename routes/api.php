@@ -30,6 +30,7 @@ Route::middleware(['auth:api'])
                 Route::post('', 'index')->name('.index');
                 Route::post('update', 'update')->name('.update');
                 Route::post('store', 'store')->name('.store');
+                Route::post('change-password', 'changePassword')->name('.change-password');
             })
             ->name('user');
         Route::prefix('/state')

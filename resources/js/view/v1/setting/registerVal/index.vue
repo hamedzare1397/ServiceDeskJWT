@@ -56,10 +56,6 @@ onMounted(()=>{
     loadingCoefficient.value = true;
     api.get('coefficient')
     .then(response=>{
-        console.log(Object.entries(response.data).map(row => {
-            let [title, news] = row;
-            return {title, data: news}
-        }));
         coefficientItems.value =
             Object.entries(response.data).map(row=>{
                 let [index, {title,news,id}] = row;

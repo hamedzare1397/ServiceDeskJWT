@@ -20,7 +20,7 @@
         </v-row>
         <v-row>
             <v-col cols="12">
-                <v-btn prepend-icon="mdi-account-in" :loading="isLoading" :disabled="isLoading" @click="login">ورود</v-btn>
+                <v-btn prepend-icon="mdi-login" :loading="isLoading" :disabled="isLoading" @click="login">ورود</v-btn>
             </v-col>
         </v-row>
         <v-row>
@@ -53,13 +53,11 @@ async function login(){
     isLoading.value = true;
     errorMessage.value = null;
     authStore.login(person)
-        .then(response => {
-            if (response.status == 200) {
-                router.push({name:'App.Dashboard'});
-            }
+        .then((response) => {
+            router.push({name:'App.Dashboard'});
         })
-        .catch(err=>{
-            errorMessage.value = err.response?.data?.username;
+        .catch(errors=>{
+            errorMessage.value = errors.response?.data?.username;
         })
         .finally(() => {
             isLoading.value = false;

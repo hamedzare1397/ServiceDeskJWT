@@ -44,5 +44,15 @@ export default [
         component:()=>import('../../view/v1/Dashboard/index.vue'),
         meta:{}
     },
+    {
+        path:'change-password',
+        name:'App.ChangePassword',
+        component:()=>import('../../view/v1/setting/user/components/changePassword.vue'),
+        meta:{}
+    },
+    {
+        path:'/:subpath',
+        redirect:{name:'App.Dashboard'},
+    },
 
 ]
