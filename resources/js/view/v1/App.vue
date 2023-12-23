@@ -4,6 +4,14 @@
             <v-app-bar elevation="1" :title="appName" image="" order="0">
                 <template v-slot:prepend>
                     <v-btn @click="showRightNav=!showRightNav" icon="mdi-menu"></v-btn>
+                    <v-btn
+                        icon="mdi-alert-circle-outline"
+                        size="small"
+                        color="info"
+                        density="compact"
+                        variant="tonal"
+                        @click="router.push({name:'App.AboutMe'})"
+                    ></v-btn>
                 </template>
                 <template v-slot:append>
                     <transition

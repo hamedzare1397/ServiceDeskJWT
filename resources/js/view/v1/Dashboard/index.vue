@@ -164,13 +164,19 @@ watch(typeSelected,(n,o)=>{
         </v-col>
     </v-row>
     </v-sheet>
-    <v-sheet class="text-center d-flex justify-center align-center h-100" color="warning">
-
-        <p>
+    <v-sheet
+        v-else-if="!loading"
+        class="text-center d-flex justify-center align-center h-100"
+        color="warning"
+    >
+        <div>
             <v-icon size="150">mdi-alert-box</v-icon>
             <v-spacer></v-spacer>
             <h1>هیچ داده ای موجود نمی باشد</h1>
-        </p>
+        </div>
+    </v-sheet>
+    <v-sheet v-else>
+
     </v-sheet>
 </v-card>
 </template>

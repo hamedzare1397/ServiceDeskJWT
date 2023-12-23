@@ -51,6 +51,11 @@ export default [
         meta:{}
     },
     {
+        path:'/about-me',
+        name:'App.AboutMe',
+        component:()=>import('../../view/v1/pages/aboutme.vue'),
+    },
+    {
         path:'/:subpath',
         redirect:{name:'App.Dashboard'},
     },
