@@ -27,4 +27,9 @@ class State extends Model
     {
         return $this->hasOne(User::class);
     }
+
+    public function news()
+    {
+        $this->hasMany(News::class,Register::class);
+    }
 }

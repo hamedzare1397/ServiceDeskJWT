@@ -2,6 +2,7 @@
 
 namespace App\Models\ViewModels;
 
+use App\Models\News;
 use App\Models\State;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

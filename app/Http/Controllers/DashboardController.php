@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ViewModels\ValueModel;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use function PHPUnit\Framework\isNull;
@@ -19,7 +20,45 @@ class DashboardController extends Controller
         $month=Str::substr($request->year_month,5,2);
 
         $statics = ValueModel::query()
-            ->with('state');
+            ->with('state',function (BelongsTo  $query)use($request,$month,$year){
+                $typeVal = $request->typeVal;
+                $query->with('registerVal',function ($registerValQuery)use($request,$month,$year,$typeVal){
+                switch ($request->type) {
+                    case 'month':
+                        $registerValQuery->where('month', $month);
+                        break;
+                    case '3month':
+                        switch ($typeVal){
+                            case 1:
+                                $registerValQuery->whereBetween('month', [1, 3]);
+                                break;
+                            case 2:
+                                $registerValQuery->whereBetween('month', [4,6]);
+                                break;
+                            case 3:
+                                $registerValQuery->whereBetween('month', [7, 9]);
+                                break;
+                            case 4:
+                                $registerValQuery->whereBetween('month', [10, 12]);
+                                break;
+                        }
+                        break;
+                    case '6month':
+                        switch ($typeVal){
+                            case 1:
+                                $query->whereBetween('month', [1, 6]);
+                                break;
+                            case 2:
+                                $query->whereBetween('month', [7,12]);
+                                break;
+                        }
+                        break;
+                    case 'year':
+                        $registerValQuery->whereBetween('year',$year);
+                        break;
+                }
+                });
+            });
         $count = $statics->get()->count();
         $statics->where('year', $year);
         if ($request->filled('type')) {

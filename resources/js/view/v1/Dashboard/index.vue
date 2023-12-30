@@ -150,12 +150,14 @@ watch(typeSelected,(n,o)=>{
                     <th  class="text-center bg-blue-darken-1" width="25">رتبه</th>
                     <th  class="text-center bg-blue-darken-1">استان</th>
                     <th class="text-center  bg-blue-darken-1">امتیاز</th>
+                    <td class="text-center" v-for="(v,i) in registersVal[0].state.register_val">{{ v.name }}</td>
                 </tr>
                 </thead>
                 <tr v-for="(item,index) in data.label" :style="`background-color: ${data.colors[index]}`">
                     <td class="text-center">{{data.rank[index]}}</td>
                     <td class="text-center">{{ item }}</td>
                     <td class="text-center">{{data.val[index]}}</td>
+                    <td class="text-center" v-for="(v,i) in registersVal[index].state.register_val">{{ v.value }}</td>
                 </tr>
             </v-table>
         </v-col>
