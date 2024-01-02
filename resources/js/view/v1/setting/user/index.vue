@@ -4,7 +4,16 @@
         <slot name="toolbar"></slot>
         <v-btn icon="mdi-refresh" :loading="isLoading" @click="getUsers(page)"></v-btn>
     </v-toolbar>
-    <v-sheet class="bg-amber h-100">
+    <v-card>
+    <v-expansion-panels>
+        <v-expansion-panel title="ایجاد کاربر">
+            <v-expansion-panel-text>
+                <user-create :states="states"></user-create>
+            </v-expansion-panel-text>
+        </v-expansion-panel>
+        <v-expansion-panel title="لیست کاربران">
+            <v-expansion-panel-text>
+                <v-sheet class="bg-amber h-100">
         <datatables :items="users.data"
                     :headers="header"
                     :loading="isLoading"
@@ -12,7 +21,7 @@
                         {key:'actions'},
                     ]"
                     :headers-prepend="[
-                        {key:'row'},
+                        {key:'row',title:'ردیف'},
                     ]"
                     :total="users.total"
                     :page="page"
@@ -41,13 +50,17 @@
                 </tr>
                 <tr v-if="item?.edit">
                     <td :colspan="colspan">
-                        <user-edit :item="item"></user-edit>
+                        <user-edit :states="states" :item="item"></user-edit>
                     </td>
                 </tr>
                 </transition-group>
             </template>
         </datatables>
     </v-sheet>
+            </v-expansion-panel-text>
+        </v-expansion-panel>
+    </v-expansion-panels>
+    </v-card>
 </v-sheet>
 </template>
 
@@ -57,6 +70,7 @@ import Datatables from "./../../Components/datatables.vue";
 import {useApi} from "@/compositions/CallApi.vue";
 import userInfo from "./components/userInformation.vue";
 import userEdit from "./components/userEdit.vue";
+import UserCreate from "./components/userCreate.vue";
 
 const api = useApi();
 const isLoading = ref(false);
@@ -69,6 +83,7 @@ const action_header = reactive([
     {title: 'نام', key: 'actions'},
 ]);
 const users = ref([]);
+const states = ref([]);
 const page = ref(1);
 const perPage = ref(10);
 function getUsers(event=1){
@@ -83,9 +98,21 @@ function getUsers(event=1){
     })
     ;
 }
+function getStates(event=1){
+    isLoading.value = true;
+    api.get(`state`)
+        .then(response => {
+            states.value = response.data;
+        })
+    .finally(()=>{
+        isLoading.value = false;
+    })
+    ;
+}
 
 onMounted(()=>{
     getUsers();
+    getStates();
 })
 </script>
 

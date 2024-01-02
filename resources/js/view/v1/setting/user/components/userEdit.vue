@@ -9,16 +9,23 @@
                 <v-col cols="12" sm="6">
                     <v-list class="rounded-shaped  v-card">
                         <v-list-item>
+                            <v-text-field label="نام" v-model="data.firstname"></v-text-field>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-text-field label="نام خانوادگی" v-model="data.lastname"></v-text-field>
+                        </v-list-item>
+                        <v-list-item>
                             <v-text-field label="کدملی" v-model="data.nativeid"></v-text-field>
                         </v-list-item>
                         <v-list-item>
-                            <v-text-field label="شماره همراه" v-model="data.mobile"></v-text-field>
+                            <v-text-field label="کد شناسایی" v-model="data.username"></v-text-field>
                         </v-list-item>
                         <v-list-item>
-                            <v-text-field label="پست الکترونیکی" v-model="data.email"></v-text-field>
+                            <v-text-field label="رمز عبور" v-model="data.password"></v-text-field>
                         </v-list-item>
                         <v-list-item>
-                            <v-text-field label="آدرس" v-model="data.address"></v-text-field>
+                            <v-select label="استان" v-model="data.state_id" item-value="id" :items="props.states"></v-select>
+                            {{data.state_id}}
                         </v-list-item>
                     </v-list>
                 </v-col>
@@ -32,6 +39,15 @@
                         </v-list-item>
                         <v-list-item>
                             <v-text-field label="پست الکترونیکی" v-model="data.email"></v-text-field>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-text-field label="شماره ثابت" v-model="data.phone"></v-text-field>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-text-field label="شماره همراه" v-model="data.mobile"></v-text-field>
+                        </v-list-item>
+                        <v-list-item>
+                            <v-text-field label="آدرس" v-model="data.address"></v-text-field>
                         </v-list-item>
                         <v-list-item>
                             <v-checkbox label="مدیر سیستم" v-model="data.admin"></v-checkbox>
@@ -50,7 +66,7 @@
 </template>
 
 <script setup>
-import {computed, defineProps, onBeforeUnmount, ref} from "vue";
+import {computed, defineProps, onBeforeMount, onBeforeUnmount, onMounted, ref} from "vue";
 import {useApi} from '@/compositions/CallApi.vue';
 
 const api = useApi();
@@ -63,8 +79,13 @@ const props=defineProps({
     col:{
         type:Number,
         default: 1,
+    },
+    states:{
+        type:Array,
+        default: [],
     }
 })
+const states = ref([]);
 const saveLoading = ref(false);
 const item = ref(props.item);
 const col = ref(props.col);
@@ -72,15 +93,19 @@ const data = ref(JSON.parse(JSON.stringify(props.item)));
 function update(){
     api.post('user/update', data.value)
     .then(response=>{
-
+        item.edit = false;
     })
     .finally(()=>{
         saveLoading.value = false;
     })
 }
+onMounted(()=>{
+    data.value.state = props.item.state?.id;
+})
 onBeforeUnmount(()=>{
     data.value = {};
 })
+
 </script>
 
 <style scoped>

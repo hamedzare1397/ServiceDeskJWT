@@ -6,7 +6,10 @@ const router = useRouter();
 
 const items = [
     {title:'کاربران',icon:'mdi-account-group',linkName:"App.Setting.User"},
-    {title:'استان',icon:'mdi-account',linkName:"App.Setting.Ostan"},
+    {title:'استان',icon:'mdi-crosshairs-gps',linkName:"App.Setting.Ostan"},
+    {title:'نوع خبر',icon:'mdi-electron-framework',linkName:"App.Setting.News"},
+    {title:'ضرایب',icon:'mdi-shape-circle-plus',linkName:"App.Setting.Coefficient"},
+    {title:'ثبت امتیازات',icon:'mdi-album',linkName:"App.Setting.Register"},
 ];
 const isSettingPage=computed(()=>{
     return router.currentRoute;
@@ -20,13 +23,14 @@ const isSettingPage=computed(()=>{
             <router-link
                 v-slot="{ isActive, href, navigate }"
                          :to="{name:item.linkName}"
+                tag="p"
             >
-                <v-card height="200" ripple class="">
-                    <div class="d-flex justify-center align-center">
-                        <v-icon size="128">{{item.icon}}</v-icon>
-                    </div>
+                <v-card height="200" ripple class="bg-blue-lighten-5">
                     <v-card-title class="text-center">
-                        <h2>{{ item.title }}</h2>
+                        <v-icon class="" size="128">{{item.icon}}</v-icon>
+                    </v-card-title>
+                    <v-card-title class="text-center">
+                        <h3>{{ item.title }}</h3>
                     </v-card-title>
                 </v-card>
             </router-link>

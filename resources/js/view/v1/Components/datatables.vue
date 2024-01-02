@@ -135,7 +135,6 @@ const page= ref(props.modelValue);
 const ShowType=ref(props.ShowType)
 const dataLoading = ref(props.loading);
 function updatePaginate(event){
-    console.log(event);
     emits('update:page', event);
 }
 watch(()=>props.page, (newVal,oldValue) => {

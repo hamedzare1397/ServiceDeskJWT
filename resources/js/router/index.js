@@ -4,6 +4,7 @@ import AppRoutes from './App/application.js'
 import {useAuthStore, useUserStore} from "@/store/user.js";
 import {computed} from "vue";
 
+
 const router=createRouter({
     history:createWebHashHistory(),
     routes:[
@@ -20,7 +21,11 @@ const router=createRouter({
             name:'App',
             component: () => import('@/view/v1/App.vue'),
             children: AppRoutes,
-        }
+        },
+        {
+            path:'/:subpath',
+            redirect:'/app',
+        },
 
     ]
 });
@@ -48,12 +53,9 @@ router.beforeEach(async (to,from,next)=>{
     }
     else if (tokenLogin.value && to.name==='Login')
     {
-        return next({name:"Home"});
+        return next({name:"App.Dashboard"});
     }
-    else if (tokenLogin.value && to.name==='Login'){
-        return next(to);
-    }
-    else if (to.name==="Login"){
+    else if (!tokenLogin.value && to.name==="Login"){
         next();
     }
     else{

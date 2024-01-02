@@ -1,7 +1,10 @@
 body{
     font-weight: bolder;
-    font-family: "B Koodak";
+    font-family: "B Nazanin";
 }
 @import '@mdi/font/css/materialdesignicons.min.css';
-
+@font-face {
+    font-family: 'Digital-7';
+    src:url("fonts/Digital-7.ttf");
+}
 @import 'animate.css';
