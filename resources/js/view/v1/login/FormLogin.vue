@@ -13,8 +13,10 @@
                       :error="errorMessage"
                       :error-messages="errorMessage"
                 ></v-text-field>
-                <v-text-field v-model="person.password" label="رمز عبور"
+                <v-text-field 
+                v-model="person.password" label="رمز عبور" type="password"
                               prepend-icon="mdi-lock"
+                              @keyup.enter="login"
                 ></v-text-field>
             </v-col>
         </v-row>
@@ -40,8 +42,8 @@ import {useRouter} from 'vue-router';
 const appName=inject('config').organ
 
 const person=reactive({
-    username:ref('admin'),
-    password:ref('000'),
+    username:ref(''),
+    password:ref(''),
 })
 
 const isLoading = ref(false);

@@ -9,7 +9,6 @@
                     {title:'دایره ای',value:'pie'},
                     {title:'ستونی',value:'bar'},
                     {title:'نقطه ای',value:'scatter'},
-                    {title:'polarArea',value:'polarArea'},
                     {title:'doughnut',value:'doughnut'},
                 ]"></v-select>
 

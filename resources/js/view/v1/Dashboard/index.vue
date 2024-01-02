@@ -142,7 +142,7 @@ watch(typeSelected,(n,o)=>{
 
     <v-sheet class="h-100" v-if="data.val.length>0">
         <v-row>
-        <v-col cols="12" sm="5" md="3">
+        <v-col cols="12" sm="8" md="6">
             <v-table class="h-100 mr-10 v-responsive" density="compact"
                      fixed-header>
                 <thead>
@@ -150,7 +150,7 @@ watch(typeSelected,(n,o)=>{
                     <th  class="text-center bg-blue-darken-1" width="25">رتبه</th>
                     <th  class="text-center bg-blue-darken-1">استان</th>
                     <th class="text-center  bg-blue-darken-1">امتیاز</th>
-                    <td class="text-center" v-for="(v,i) in registersVal[0].state.register_val">{{ v.name }}</td>
+                    <td class="text-center bg-blue-darken-1" v-for="(v,i) in registersVal[0].state.register_val">{{ v.name }}</td>
                 </tr>
                 </thead>
                 <tr v-for="(item,index) in data.label" :style="`background-color: ${data.colors[index]}`">
@@ -161,7 +161,7 @@ watch(typeSelected,(n,o)=>{
                 </tr>
             </v-table>
         </v-col>
-        <v-col cols="12" sm="7" md="9">
+        <v-col cols="12" sm="4" md="6">
             <chart v-if="registersVal" :data="data"></chart>
         </v-col>
     </v-row>
